@@ -1,5 +1,6 @@
 package br.ita.automaton.test;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 
@@ -9,6 +10,7 @@ import org.junit.Test;
 
 import br.ita.automaton.core.*;
 import br.ita.automaton.dfa.*;
+import br.ita.automaton.visual.GraphViz;
 
 import static org.junit.Assert.*;
 
@@ -74,7 +76,25 @@ public class DFAMinimizerTest {
 	public void testMinimize() {
 		logger.info("testMinimize");
 		
+		// Visual DFA
+		GraphViz gv = new GraphViz();
+		gv.addln(automaton.toDot());
+		System.out.println(gv.getDotSource());
+		gv.increaseDpi();   // 106 dpi
+		String type = "gif";
+		String repesentationType= "dot";
+		File out = new File(gv.TEMP_DIR + "/DFA." + type); // Windows
+		gv.writeGraphToFile( gv.getGraph(gv.getDotSource(), type, repesentationType), out );
+		
 		DFA minimized = DFAMinimizer.minimize(automaton);
+		
+		// Visual DFA Minimized
+		GraphViz gv2 = new GraphViz();
+		gv2.addln(minimized.toDot());
+		System.out.println(gv.getDotSource());
+		gv2.increaseDpi();   // 106 dpi
+		out = new File(gv2.TEMP_DIR + "/DFAMinimized." + type); // Windows
+		gv2.writeGraphToFile( gv2.getGraph(gv2.getDotSource(), type, repesentationType), out );
 		
 		assertTrue(minimized.getStates().size() == 5);
 		
