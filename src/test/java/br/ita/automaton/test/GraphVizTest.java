@@ -9,7 +9,7 @@ public class GraphVizTest {
 	@Test
 	public void visualTest() {
 		GraphViz gv = new GraphViz();
-		System.out.println(gv.osName + " - " + gv.TEMP_DIR);
+		System.out.println(gv.TEMP_DIR);
 		gv.addln(gv.start_graph());
 		gv.addln("A -> B;");
 		gv.addln("A -> C;");

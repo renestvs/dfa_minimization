@@ -17,6 +17,7 @@ import static org.junit.Assert.*;
 public class DFAMinimizerTest {
 	
 	private DFA automaton;
+	private GraphViz gv;
 	
 	private static Logger logger = Logger.getLogger(DFAMinimizerTest.class);
 	
@@ -69,32 +70,33 @@ public class DFAMinimizerTest {
 		automaton.addState(state5);
 		automaton.addState(state6);
 		automaton.addState(state7);
+		
+		gv = new GraphViz();
 	}
 	
 	
 	@Test
 	public void testMinimize() {
 		logger.info("testMinimize");
-		
-		// Visual DFA
-		GraphViz gv = new GraphViz();
-		gv.addln(automaton.toDot());
-		System.out.println(gv.getDotSource());
-		gv.increaseDpi();   // 106 dpi
+
 		String type = "gif";
 		String repesentationType= "dot";
-		File out = new File(gv.TEMP_DIR + "/DFA." + type); // Windows
-		gv.writeGraphToFile( gv.getGraph(gv.getDotSource(), type, repesentationType), out );
+		
+		// Visual DFA		
+		gv.addln(automaton.toDot());
+		logger.info(gv.getDotSource());
+		gv.increaseDpi();   
+		File out = new File(gv.TEMP_DIR + "/dfa." + type);
+		gv.writeGraphToFile(gv.getGraph(gv.getDotSource(), type, repesentationType), out);
+		gv.clearGraph();
 		
 		DFA minimized = DFAMinimizer.minimize(automaton);
 		
 		// Visual DFA Minimized
-		GraphViz gv2 = new GraphViz();
-		gv2.addln(minimized.toDot());
-		System.out.println(gv.getDotSource());
-		gv2.increaseDpi();   // 106 dpi
-		out = new File(gv2.TEMP_DIR + "/DFAMinimized." + type); // Windows
-		gv2.writeGraphToFile( gv2.getGraph(gv2.getDotSource(), type, repesentationType), out );
+		gv.addln(minimized.toDot());
+		logger.info(gv.getDotSource());
+		out = new File(gv.TEMP_DIR + "/minimized-dfa." + type); 
+		gv.writeGraphToFile(gv.getGraph(gv.getDotSource(), type, repesentationType), out);
 		
 		assertTrue(minimized.getStates().size() == 5);
 		
@@ -107,5 +109,5 @@ public class DFAMinimizerTest {
 		assertTrue(minimized.getState(minimized.getState(
 			minimized.getState(minimized.getState(initialState, 'a'), 'b'), 'b'), 'b').isAccept());
 	}
-
+	
 }
