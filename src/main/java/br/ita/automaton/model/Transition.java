@@ -1,7 +1,8 @@
-package br.ita.automaton.core;
+package br.ita.automaton.model;
 
 import java.io.Serializable;
 
+import br.ita.automaton.util.TransitionType;
 import br.ita.automaton.visual.Visualizable;
 
 /**

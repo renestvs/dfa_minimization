@@ -3,7 +3,7 @@ package br.ita.automaton.nfa;
 import java.util.HashSet;
 import java.util.Set;
 
-import br.ita.automaton.core.*;
+import br.ita.automaton.model.*;
 
 /**
  * Nondeterministic finite state automaton

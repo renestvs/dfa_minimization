@@ -5,8 +5,9 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
-import br.ita.automaton.core.*;
+import br.ita.automaton.model.*;
 import br.ita.automaton.nfa.NFA;
+import br.ita.automaton.util.TransitionType;
 
 public class NFAToDFAConverter {
 		

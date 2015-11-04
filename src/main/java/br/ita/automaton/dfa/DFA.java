@@ -1,6 +1,6 @@
 package br.ita.automaton.dfa;
 
-import br.ita.automaton.core.*;
+import br.ita.automaton.model.*;
 
 /**
  * Deterministic finite automaton

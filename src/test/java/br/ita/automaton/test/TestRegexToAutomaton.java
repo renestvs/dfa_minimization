@@ -1,10 +1,10 @@
 package br.ita.automaton.test;
 
-import br.ita.automaton.approximate.ApproximateAutomatonConverter;
-import br.ita.automaton.core.Automaton;
 import br.ita.automaton.dfa.*;
+import br.ita.automaton.model.Automaton;
 import br.ita.automaton.nfa.NFA;
 import br.ita.automaton.regex.RegularExpression;
+import br.ita.automaton.util.ApproximateAutomatonConverter;
 
 
 public class TestRegexToAutomaton {

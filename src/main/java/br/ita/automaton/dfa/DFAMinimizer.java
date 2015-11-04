@@ -8,8 +8,8 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
-import br.ita.automaton.core.*;
-import br.ita.automaton.test.DFAMinimizerTest;
+import br.ita.automaton.model.*;
+import br.ita.automaton.util.TransitionType;
 
 /**
  * DFA minimizer
@@ -17,7 +17,7 @@ import br.ita.automaton.test.DFAMinimizerTest;
  */
 public class DFAMinimizer {
 	
-	private static Logger logger = Logger.getLogger(DFAMinimizerTest.class);
+	private static Logger logger = Logger.getLogger(DFAMinimizer.class);
 	
 	/**
 	 * Minimize {@link DFA}

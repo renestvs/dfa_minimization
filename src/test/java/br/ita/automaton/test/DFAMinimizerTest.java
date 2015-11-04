@@ -8,8 +8,9 @@ import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
-import br.ita.automaton.core.*;
 import br.ita.automaton.dfa.*;
+import br.ita.automaton.model.*;
+import br.ita.automaton.util.TransitionType;
 import br.ita.automaton.visual.GraphViz;
 
 import static org.junit.Assert.*;

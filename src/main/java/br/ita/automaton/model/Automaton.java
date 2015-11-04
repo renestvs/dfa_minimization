@@ -1,4 +1,4 @@
-package br.ita.automaton.core;
+package br.ita.automaton.model;
 
 import java.io.Serializable;
 import java.util.LinkedHashSet;

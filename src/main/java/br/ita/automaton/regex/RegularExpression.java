@@ -2,8 +2,9 @@ package br.ita.automaton.regex;
 
 import java.util.Set;
 
-import br.ita.automaton.core.*;
+import br.ita.automaton.model.*;
 import br.ita.automaton.nfa.NFA;
+import br.ita.automaton.util.TransitionType;
 import br.ita.automaton.visual.Visualizable;
 
 /**

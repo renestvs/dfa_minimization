@@ -16,6 +16,12 @@
     <jquery.version>1.9.0</jquery.version>
     <sitemesh.version>2.4.2</sitemesh.version>
     <commons-lang.version>2.3</commons-lang.version>
+    <!-- BUILD -->
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <maven.compiler.target>1.6</maven.compiler.target>
+    <maven.compiler.source>1.6</maven.compiler.source>
+    <maven.compiler.plugin>2.3.2</maven.compiler.plugin>
   </properties>
   
   <dependencies>
@@ -122,18 +128,16 @@
 		
    </dependencies>
   
-  <build>
-    <finalName>automaton</finalName>
-	<!-- <plugins>
-		<plugin>
-			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-compiler-plugin</artifactId>
-			<version>3.3</version>
-			<configuration>
-				<source>1.7</source>
-				<target>1.7</target>
-			</configuration>
-		</plugin>
-    </plugins> -->
-  </build>
+   <build>
+	  <plugins>
+	    <plugin>
+	      <artifactId>maven-compiler-plugin</artifactId>
+	      <version>${maven.compiler.plugin}</version>
+	        <configuration>
+	          <source>${maven.compiler.source}</source>
+	          <target>${maven.compiler.target}</target>
+	        </configuration>
+	    </plugin>
+	  </plugins>
+	</build>
 </project>

@@ -2,7 +2,7 @@ package br.ita.automaton.dfa;
 
 import java.util.Set;
 
-import br.ita.automaton.core.State;
+import br.ita.automaton.model.State;
 
 /**
  * DFA state containing references to corresponding NFA states

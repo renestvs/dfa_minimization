@@ -6,9 +6,10 @@ import java.util.LinkedHashSet;
 import org.junit.Before;
 import org.junit.Test;
 
-import br.ita.automaton.approximate.ApproximateAutomatonConverter;
-import br.ita.automaton.core.*;
+import br.ita.automaton.model.*;
 import br.ita.automaton.nfa.NFA;
+import br.ita.automaton.util.ApproximateAutomatonConverter;
+import br.ita.automaton.util.TransitionType;
 
 import static org.junit.Assert.*;
 

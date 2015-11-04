@@ -1,4 +1,4 @@
-package br.ita.automaton.core;
+package br.ita.automaton.util;
 
 /**
  * Type on FSA transition
