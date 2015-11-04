@@ -1,5 +1,5 @@
 ######################
-# Maven
+# Maven              #
 ######################
 pom.xml.tag
 pom.xml.releaseBackup
@@ -10,7 +10,7 @@ dependency-reduced-pom.xml
 buildNumber.properties
 
 ######################
-# Eclipse
+# Eclipse            #
 ######################
  
 *.pydevproject
@@ -28,14 +28,26 @@ local.properties
 .settings/
 .loadpath
  
-# Directories #
+######################
+# Log                #
+######################
+/log/*
+.log
+
+######################
+# Directories        #
+######################
+
 /build/
 /bin/
 target/
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
- 
-# Package Files #
+
+######################
+# Package Files      #
+######################
+
 *.jar
 *.war
 *.ear
