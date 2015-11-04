@@ -11,12 +11,12 @@ import org.springframework.web.servlet.ModelAndView;
 public class AutomatonController {
 	String message = "Welcome to DFA Minization!";
  
-	@RequestMapping(value = "/automaton",  method = RequestMethod.GET)
+	@RequestMapping(value = "/dfa_minimizer",  method = RequestMethod.GET)
 	public ModelAndView showMessage(
 			@RequestParam(value = "name", required = false, defaultValue = "World") String name) {
 		System.out.println("in controller");
  
-		ModelAndView mv = new ModelAndView("automaton");
+		ModelAndView mv = new ModelAndView("dfa_minimizer");
 		mv.addObject("message", message);
 		mv.addObject("name", name);
 		return mv;
