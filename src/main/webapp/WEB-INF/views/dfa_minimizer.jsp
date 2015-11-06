@@ -14,11 +14,13 @@
 	            <div class="row">
 	                <div class="col-lg-12 text-center">
 	                    <h2>Your Original DFA Here</h2>
+	                                
+	                    
 	                </div>
 	            </div>
 	            <div class="row">
 	                <div class="col-lg-8 col-lg-offset-2">
-	                    <form name="sentMessage" id="contactForm" novalidate>
+	                    <form method="post" action="results" name="sentMessage" id="contactForm" novalidate>
 	                        <div class="row control-group">
 	                            <div class="form-group col-xs-12 floating-label-form-group controls">
 	                                <label>Input</label>
@@ -30,6 +32,7 @@
 	                        <div class="row">
 	                            <div class="form-group col-xs-12">
 	                                <button type="submit" class="btn btn-success btn-lg">Minimize</button>
+	                                <input type="submit" value="Minimizar">
 	                            </div>
 	                        </div>
 	                    </form>

@@ -144,19 +144,7 @@
 	<!-- Bootstrap Core JavaScript -->
 	<script type="text/javascript" src="${pageContext.request.contextPath}/assets/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
-	<!-- Plugin JavaScript -->
-	<%-- <script type="text/javascript" src="${pageContext.request.contextPath}/assets/WOW/1.1.2/wow.min.js"></script> --%>
-	<%-- <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery.fittext.js"></script> --%>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/assets/jquery.easing/1.3.0/js/jquery.easing.min.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/classie.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/cbpAnimatedHeader.js"></script>
 	
-	<!-- Contact Form JavaScript -->
-    <script type="text/javascript" src="${pageContext.request.contextPath}/assets/jqbootstrapvalidation/1.3.6/jqBootstrapValidation.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/contact_me.js"></script>
-	
-	<!-- Custom Theme JavaScript -->
-    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/freelancer.js"></script>
 
 </body>
 </html>
