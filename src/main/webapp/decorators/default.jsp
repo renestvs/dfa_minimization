@@ -13,6 +13,8 @@
     
     <title><decorator:title></decorator:title></title>
  	
+ 	<link href="${pageContext.request.contextPath}/resources/img/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+ 	
  	<!-- Bootstrap Core CSS -->
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/bootstrap/3.3.5/css/bootstrap.min.css" media="all"/>
  	

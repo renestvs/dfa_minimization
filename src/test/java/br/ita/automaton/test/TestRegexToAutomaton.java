@@ -1,9 +1,9 @@
 package br.ita.automaton.test;
 
-import br.ita.automaton.dfa.*;
+import br.ita.automaton.core.dfa.*;
+import br.ita.automaton.core.nfa.NFA;
+import br.ita.automaton.core.regex.RegularExpression;
 import br.ita.automaton.model.Automaton;
-import br.ita.automaton.nfa.NFA;
-import br.ita.automaton.regex.RegularExpression;
 import br.ita.automaton.util.ApproximateAutomatonConverter;
 
 

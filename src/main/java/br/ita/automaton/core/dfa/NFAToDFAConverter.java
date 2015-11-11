@@ -1,12 +1,12 @@
-package br.ita.automaton.dfa;
+package br.ita.automaton.core.dfa;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
+import br.ita.automaton.core.nfa.NFA;
 import br.ita.automaton.model.*;
-import br.ita.automaton.nfa.NFA;
 import br.ita.automaton.util.TransitionType;
 
 public class NFAToDFAConverter {

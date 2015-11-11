@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import br.ita.automaton.core.nfa.NFA;
 import br.ita.automaton.model.*;
-import br.ita.automaton.nfa.NFA;
 
 /**
  * Converts from input automaton to NFA that allows errors.

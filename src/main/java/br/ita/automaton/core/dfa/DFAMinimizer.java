@@ -1,4 +1,4 @@
-package br.ita.automaton.dfa;
+package br.ita.automaton.core.dfa;
 
 import java.util.HashMap;
 import java.util.LinkedHashSet;

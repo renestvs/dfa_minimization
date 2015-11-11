@@ -1,4 +1,4 @@
-package br.ita.automaton.regex;
+package br.ita.automaton.core.regex;
 
 import java.util.HashSet;
 import java.util.Set;

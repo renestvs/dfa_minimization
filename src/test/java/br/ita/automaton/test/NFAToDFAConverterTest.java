@@ -9,9 +9,9 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import br.ita.automaton.dfa.*;
+import br.ita.automaton.core.dfa.*;
+import br.ita.automaton.core.nfa.NFA;
 import br.ita.automaton.model.*;
-import br.ita.automaton.nfa.NFA;
 import br.ita.automaton.util.TransitionType;
 
 import static org.junit.Assert.*;

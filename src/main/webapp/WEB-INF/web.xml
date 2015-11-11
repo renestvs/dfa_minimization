@@ -5,9 +5,9 @@
 	<display-name>Archetype Created Web Application</display-name>
  	
  	<context-param>
-        <param-name>classpath:applicationContext.xml</param-name>
+        <param-name>/WEB-INF/dispatcher-servlet.xml</param-name>
         <param-value>
-            <!--classpath resource of spring configs or other required configs go here -->
+            /WEB-INF/dispatcher-servlet.xml
         </param-value>
     </context-param>
  

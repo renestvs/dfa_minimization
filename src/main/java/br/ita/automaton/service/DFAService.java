@@ -1,30 +1,31 @@
-package br.ita.automaton.test;
+package br.ita.automaton.service;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 
-import org.apache.log4j.Logger;
-import org.junit.Before;
-import org.junit.Test;
-
-import br.ita.automaton.core.dfa.*;
-import br.ita.automaton.model.*;
+import br.ita.automaton.core.dfa.DFA;
+import br.ita.automaton.core.dfa.DFAMinimizer;
+import br.ita.automaton.model.State;
+import br.ita.automaton.model.Transition;
 import br.ita.automaton.util.TransitionType;
 import br.ita.automaton.visual.GraphViz;
 
-import static org.junit.Assert.*;
-
-public class DFAMinimizerTest {
+public class DFAService {
 	
-	private DFA automaton;
-	private GraphViz gv;
+	private DFA automaton = new DFA();
+	private GraphViz automatonVisual = new GraphViz();;
+	private String type = "jpg";
+	private String repesentationType= "dot";
 	
-	private static Logger logger = Logger.getLogger(DFAMinimizerTest.class);
+	private String DFAPath;
+	private String DFAminizedPath;
 	
-	@Before
-	public void setUp() {
-		automaton = new DFA();
+	public DFAService (){
+		
+	}
+	
+	public boolean DFAMinimizer (String path){
 		
 		automaton.setAlphabet(new LinkedHashSet<Character>(Arrays.asList('a', 'b')));
 				
@@ -72,43 +73,50 @@ public class DFAMinimizerTest {
 		automaton.addState(state6);
 		automaton.addState(state7);
 		
-		gv = new GraphViz();
-	}
-	
-	
-	@Test
-	public void testMinimize() {
-		logger.info("testMinimize");
-
-		String type = "gif";
-		String repesentationType= "dot";
-		
-		// Visual DFA		
-		gv.addln(automaton.toDot());
-		logger.info(gv.getDotSource());
-		gv.increaseDpi();   
-		File out = new File(gv.TEMP_DIR + "/dfa." + type);
-		gv.writeGraphToFile(gv.getGraph(gv.getDotSource(), type, repesentationType), out);
-		gv.clearGraph();
-		
+		if (visualDFA(automaton, path, "DFA")){
+			setDFAPath("DFA");
+		}
 		DFA minimized = DFAMinimizer.minimize(automaton);
+
+		if(visualDFA(minimized, path, "DFAminimized")){
+			setDFAminizedPath("DFAminimized");
+		}
 		
-		// Visual DFA Minimized
-		gv.addln(minimized.toDot());
-		logger.info(gv.getDotSource());
-		out = new File(gv.TEMP_DIR + "/minimized-dfa." + type); 
-		gv.writeGraphToFile(gv.getGraph(gv.getDotSource(), type, repesentationType), out);
-		
-		assertTrue(minimized.getStates().size() == 5);
-		
-		State initialState = minimized.getInitialState();
-		
-		assertEquals(minimized.getState(initialState, 'b'), initialState);
-		
-		assertTrue(minimized.getState(minimized.getState(initialState, 'a'), 'b').isAccept());
-		
-		assertTrue(minimized.getState(minimized.getState(
-			minimized.getState(minimized.getState(initialState, 'a'), 'b'), 'b'), 'b').isAccept());
+		return true;
 	}
+
+	private boolean visualDFA(DFA automaton, String path, String filename) {
+		// Visual DFA		
+		automatonVisual.addln(automaton.toDot());
+		automatonVisual.increaseDpi();   
+		automatonVisual.writeGraphToFile(automatonVisual.getGraph(
+				automatonVisual.getDotSource(), type, repesentationType), 
+				filePath(path, filename));
+		automatonVisual.clearGraph();
+		return true;
+	}
+
+	private File filePath(String path, String filename) {
+		File out = new File(path, "/resources/img/" + filename + "." + type);
+		return out;
+	}
+	
+	public String getDFAPath() {
+		return DFAPath;
+	}
+
+	public void setDFAPath(String filename) {
+		this.DFAPath = "/automaton/resources/img/" + filename + "." + type;
+	}
+
+	public String getDFAminizedPath() {
+		return DFAminizedPath;
+	}
+
+	public void setDFAminizedPath(String filename) {
+		DFAminizedPath = "/automaton/resources/img/" + filename + "." + type;
+	}
+
+
 	
 }

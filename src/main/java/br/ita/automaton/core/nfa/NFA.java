@@ -1,4 +1,4 @@
-package br.ita.automaton.nfa;
+package br.ita.automaton.core.nfa;
 
 import java.util.HashSet;
 import java.util.Set;
