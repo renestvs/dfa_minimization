@@ -1,26 +1,20 @@
 package br.ita.automaton.test;
 
-import java.io.File;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 
-import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
 import br.ita.automaton.core.dfa.*;
 import br.ita.automaton.model.*;
 import br.ita.automaton.util.TransitionType;
-import br.ita.automaton.visual.GraphViz;
 
 import static org.junit.Assert.*;
 
 public class DFAMinimizerTest {
 	
 	private DFA automaton;
-	private GraphViz gv;
-	
-	private static Logger logger = Logger.getLogger(DFAMinimizerTest.class);
 	
 	@Before
 	public void setUp() {
@@ -71,33 +65,13 @@ public class DFAMinimizerTest {
 		automaton.addState(state5);
 		automaton.addState(state6);
 		automaton.addState(state7);
-		
-		gv = new GraphViz();
-	}
 	
+	}
 	
 	@Test
 	public void testMinimize() {
-		logger.info("testMinimize");
-
-		String type = "gif";
-		String repesentationType= "dot";
-		
-		// Visual DFA		
-		gv.addln(automaton.toDot());
-		logger.info(gv.getDotSource());
-		gv.increaseDpi();   
-		File out = new File(gv.TEMP_DIR + "/dfa." + type);
-		gv.writeGraphToFile(gv.getGraph(gv.getDotSource(), type, repesentationType), out);
-		gv.clearGraph();
 		
 		DFA minimized = DFAMinimizer.minimize(automaton);
-		
-		// Visual DFA Minimized
-		gv.addln(minimized.toDot());
-		logger.info(gv.getDotSource());
-		out = new File(gv.TEMP_DIR + "/minimized-dfa." + type); 
-		gv.writeGraphToFile(gv.getGraph(gv.getDotSource(), type, repesentationType), out);
 		
 		assertTrue(minimized.getStates().size() == 5);
 		

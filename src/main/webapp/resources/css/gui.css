@@ -18,6 +18,7 @@ body {
     -webkit-flex:1;
     flex:1;
     position:relative;
+    padding:300px;
 }
 
 #left-pane {

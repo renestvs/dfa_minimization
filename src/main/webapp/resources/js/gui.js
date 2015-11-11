@@ -44,7 +44,7 @@
         automataListBtn,
         automataListUL,
         automatoncodeedit,
-        automatonFileName,
+        automatonFileName,       //= "automata", //This var was setted by the Automaton Project
         programFileName,
         resultsContent,
         automataNumber,
@@ -71,7 +71,32 @@
         sw,
         aceEditor;
 
+    // This function was created by Automaton Project Team 
+    function post(path, params, method) {
+        method = method || "post"; // Set method to post by default if not specified.
 
+        // The rest of this code assumes you are not using a library.
+        // It can be made less wordy if you use one.
+        var form = document.createElement("form");
+        form.setAttribute("method", method);
+        form.setAttribute("action", path);
+        
+        console.log(params);
+
+        for(var key in params) {
+            if(params.hasOwnProperty(key)) {
+                var hiddenField = document.createElement("input");
+                hiddenField.setAttribute("type", "hidden");
+                hiddenField.setAttribute("name", key);
+                hiddenField.setAttribute("value", params[key]);
+                form.appendChild(hiddenField);
+             }	
+        }
+        
+        document.body.appendChild(form);
+        form.submit();
+    }
+    
     function viz(code, callback) {
         if (window.Viz) {
             if (loadingViz) {
@@ -98,7 +123,7 @@
             );
         }
     }
-
+    
     audescript.console = {
         logg: function (type, printed) {
             var line = document.createElement("div");
@@ -639,11 +664,13 @@
 
         if (curAlgo.value === "id") {
             resultsConsole.textContent = "";
-            setResult(automataDesigner.getAutomaton(automataDesigner.currentIndex));
+            post('dfa_minimizer/results', {automaton: automataDesigner.getAutomatonCode(automataDesigner.currentIndex, true)});
+            //setResult(automataDesigner.getAutomaton(automataDesigner.currentIndex));
             return;
         } else {
             if (modules[curAlgo.value]) {
-                runProgram(modules[curAlgo.value], curAlgo.value);
+                post('dfa_minimizer/results', {automaton: automataDesigner.getAutomatonCode(automataDesigner.currentIndex, true)});
+                //runProgram(modules[curAlgo.value], curAlgo.value);
             } else {
                 loadingProgNot = libD.notify({
                     type: "info",
@@ -1092,8 +1119,7 @@
             var divWelcome = document.createElement("div");
             divWelcome.id = "welcome";
             divWelcome.innerHTML = libD.format(_(
-                "<h2>Welcome to {0}!</h2>" +
-                "<h3> Never used {0} before? </h3>" +
+                "<h3> Never used it before? </h3>" +
                 "<ul>" +
                 "    <li>Create your first automaton by clicking on the <strong>New state</strong> button at the bottom left of the screen.</li>" +
                 "    <li>You can apply an algorithm on your automaton with the <strong>Select an algo</strong> toolbar button.</li>" +
@@ -1107,10 +1133,8 @@
                 "    <li>To set a state as <strong>(non-)accepting</strong>, right-click on it.</li>" +
                 "    <li>To <strong>remove</strong> a state or a transition, ctrl-click on it.</li>" +
                 "</ul>" +
-                "<h3> Quizzes </h3>" +
-                "<p>To load a quiz, click on the \"Load a Quiz\" toolbar button. You can keep on using all the features of the program, like running algorithms, during the quiz whenever it is possible to draw an automaton.</p>" +
                 "<p> Now it’s your turn!</p>"
-            ), "Aude");
+            ), "Automaton Project/AUDE");
 
             automataDesigner.svgContainer.parentNode.appendChild(divWelcome);
             function hideWelcome() {

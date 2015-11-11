@@ -32,9 +32,9 @@ public class DFAController {
 	
 	@RequestMapping(value = "/dfa_minimizer/results",  method = RequestMethod.POST)
 	public ModelAndView dfaMinimization(
-			@RequestParam(value = "name", required = false, defaultValue = "World") String name) {
-
-		getDFA().DFAMinimizer(servletContext.getRealPath("/"));
+			@RequestParam(value = "automaton", required = false, defaultValue = "Empty") String automaton) {
+		
+		getDFA().DFAMinimizer(servletContext.getRealPath("/"), automaton);
 		logger.info("DFA PATH: " + getDFA().getDFAPath()); 
 		logger.info("MINIMIZED PATH: " + getDFA().getDFAminizedPath());
 		
