@@ -1,0 +1,5 @@
+let m := new Map
+
+m.set({1}, 2)
+
+return (m.has({1}), m.get({1}))

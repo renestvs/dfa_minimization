@@ -1,0 +1,34 @@
+from determinization import determinize
+
+function cycleCheck(A, qstart) {
+    A := determinize(A)
+
+    if not qstart then
+        qstart := A.getInitialState()
+    end if
+
+    let Visite       := {}
+    let V            := heap([qstart])
+    let cycle_trouve := false
+
+    do
+        let q := V.top()
+
+        let successeursNonVisites := A.getSuccessors(q) inter Visite
+
+        if successeursNonVisites is empty then
+            V.pop()
+            Visite.add(q)
+        else
+            let q2 = successeursNonVisites.getItem();
+
+            if q2 belongs to V then
+                cycle_trouve = true
+            else
+                V.push(q2)
+            end if
+        end if
+    while (V.length != 0 && not cycle_trouve)
+end function
+
+run(cycleCheck, get_automaton(currentAutomaton))

@@ -1,0 +1,23 @@
+This is libD 1.1.
+
+libD is a set of javascript functions and objects under the GNU GPL 3+ that can be used in various projects.
+
+You can see libD as a chunk of common code shared between several projects.
+It's not yet mature. You can use it, but at your own risk:
+it's not yet well documented, its API can change (but the base should not change very much for this version), it can eat your users.
+
+If after reading this you still want to use it, ok then.
+I would appreciate you send me a message to let me know.
+
+Any contribution, suggestion, idea, code will be appreciated.
+
+Internet Explorer is differently supported by the different modules because little efforts are made to support this browser.
+Almost everything should work on IE7+  anyway.
+
+For those who are interested, the "D" of libD has no meaning.
+I just had to choose a namespace and libD is what came. Why? I don't know. Maybe "Dirty" could fit well for the moment.
+
+libD calls third-party shims available in the 3rd folder. See 3rd/README for more details.
+
+Author :
+	Raphaël Jakse : raphael dot jakse at gmail dot com

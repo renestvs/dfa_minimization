@@ -1,0 +1,41 @@
+from determinization import determinize, isDeterminized
+from completion import complete
+
+export function product(A1, A2, deter)
+   if deter = false then
+      A1 := A1.copy()
+      A2 := A2.copy()
+   else
+      A1 := if isDeterminized(A1) then A1.copy() else determinize(A1, false)
+      A2 := if isDeterminized(A2) then A2.copy() else determinize(A2, false)
+   end if
+
+   let prodA := new Automaton
+
+   let Ta := A1.getTransitionFunction()
+   let Tb := A2.getTransitionFunction()
+
+   prodA.setStates(A1.getStates() cross A2.getStates(), true)
+   prodA.setAlphabet(A1.getAlphabet() union A2.getAlphabet())
+
+   prodA.setInitialState( (A1.getInitialState(), A2.getInitialState()) )
+   prodA.setFinalStates(A1.getFinalStates() cross A2.getFinalStates(), true)
+
+   foreach state in prodA.getStates() do
+      foreach symbol in prodA.getAlphabet() do
+         let dest1 := Ta(state[0], symbol).getItem()
+         let dest2 := Tb(state[1], symbol).getItem()
+
+         if dest1 is not undefined and  dest2 is not undefined then
+            prodA.addTransition(
+               (state[0], state[1]),
+               symbol,
+               (dest1, dest2)
+            )
+         end if
+      done
+   done
+   return prodA
+end function
+
+run(get_automata, 2, product)

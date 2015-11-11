@@ -1,0 +1,37 @@
+from epsElimination import epsElim
+
+export function emptyLanguage(A)
+   # If the automaton doesn't recognize any word, return true. Otherwize, return false.
+
+    A := epsElim(A)
+
+    let visitedStates := {}
+
+    function visit(state)
+        if visitedStates contains state then
+            return true
+        end if
+
+        if A.isAcceptingState(state) then
+            return false
+        end if
+
+        visitedStates := visitedStates union {state}
+
+        foreach symbol in trans(state) do
+            foreach destinationState in trans(state, symbol) do
+                if not visit(destinationState) then
+                    return false
+                end if
+            done
+        done
+        return true
+    end function
+
+
+    let trans := A.getTransitionFunction()
+
+    return visit(A.getInitialState())
+end function
+
+run(emptyLanguage, get_automaton(currentAutomaton))

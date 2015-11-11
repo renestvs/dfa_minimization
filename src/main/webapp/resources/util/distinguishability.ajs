@@ -1,0 +1,82 @@
+# This function takes an automaton A and returns a set of
+# couples of states that are differentiable two at a time.
+export function distinguableStates(A)
+   let F     := A.getFinalStates()
+   let Q     := A.getStates()
+   let Sigma := A.getAlphabet()
+   let delta := A.getTransitionFunction(true)
+
+   let D     := F cross (Q minus F) # The set of couples of differentiable states
+                                    # initialized with final/non final states.
+
+   let D_pre := {}  # value of D during the previous iteration
+
+   until D = D_pre do
+      D_pre := D.copy()
+
+      let X := {} # we find new differentiable states
+      foreach p in Q do
+         foreach q in Q do
+            if (p, q) does not belong to D then
+               foreach a in Sigma do
+                  if (delta(p, a), delta(q, a)) belongs to D or (delta(q, a), delta(p, a)) belongs to D then
+                     D.add( (p, q) )
+                     D.add( (q, p) )
+                  end if
+               done
+            end if
+         done
+      done
+   done
+   return D
+end function
+
+if typeof Node = "function" and typeof document = "object" and document instanceof Node then
+    run(
+        (function(A)
+            let res    := distinguableStates(A)
+            let states := A.getStates().getList();
+            let len    := states.length
+            let table  := document.createElement("table")
+
+            states.sort()
+
+            for i from 1 to len - 1 do
+                let row := table.insertRow()
+                let col := document.createElement("th")
+
+                col.textContent := Set.prototype.elementToString(states[i])
+                row.appendChild(col)
+
+                for j from 0 to i - 1 do
+                    col := row.insertCell()
+
+                    if res contains (states[i], states[j]) then
+                        col.textContent := "×"
+                    end if
+                done
+            done
+
+            let row := table.insertRow()
+            row.insertCell()
+
+            for j from 0 to len - 2 do
+                let col := document.createElement("th")
+                col.textContent := Set.prototype.elementToString(states[j])
+                row.appendChild(col)
+            done
+
+            let div := document.createElement("div")
+            let p   := document.createElement("pre")
+
+            p.textContent := res.toString()
+            div.appendChild(p)
+            div.appendChild(table)
+
+            return div
+        end function),
+        get_automaton(currentAutomaton)
+   )
+else
+   run(distinguableStates, get_automaton(currentAutomaton))
+end if

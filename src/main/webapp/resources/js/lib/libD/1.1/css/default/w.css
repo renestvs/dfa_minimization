@@ -1,0 +1,111 @@
+.libDW-hbox
+{
+	display:table;
+	margin:auto
+}
+
+.libDW-hbox, .libDW-vbox, .libDW-grid
+{
+	width:100%;
+	height:100%
+}
+
+.libDW-win
+{
+	overflow:auto;
+	width:100%;
+	height:100%;
+	margin:0;
+	padding:0
+}
+
+.libDW-hbox > .box-child, .libDW-hbox > .resize-handle
+{
+	display:table-cell;
+	vertical-align:middle;
+	text-align:center
+}
+
+.libDW-li
+{
+	display:block;
+	text-decoration:none;
+	color:black;
+	-moz-transition:500ms;
+	-khtml-transition:500ms;
+	-o-transition:all 500ms;
+	transition:all 500ms;
+}
+
+.libDW-li:hover
+{
+	background:#CCC;
+	background:rgba(200,230,255,0.8);
+}
+
+.libDW-li .libDW-icon, .libDW-li .libDW-title-descr-wrap
+{
+	display:inline-block;
+	vertical-align:middle
+}
+
+.libDW-li-descr
+{
+	color:gray;
+	font-style:italic;
+	font-size:0.85em
+}
+
+.libDW-li .libDW-icon
+{
+	margin-right:0.75ex;
+}
+
+.libDW-hrule
+{
+	border-radius:3px;
+	background:black;
+	background:-moz-linear-gradient(left,silver, black, silver);
+	background:-webkit-linear-gradient(left,silver, black, silver);
+	background:-o-linear-gradient(left,silver, black, silver);
+	background:-ms-linear-gradient(left,silver, black, silver);
+	background:linear-gradient(left,silver, black, silver);
+	border:0;
+	height:1px
+}
+
+.libDW-form
+{
+	display:table
+}
+
+.libDW-formLine
+{
+	display:table-row
+}
+
+.libDW-form-text, .libDW-form-widget
+{
+	display:table-cell
+}
+
+/*.libDW-button
+{
+	text-align:center;
+	background:rgba(220, 240, 255, 0.5);
+	box-shadow:-4px -4px 4px rgba(200,210,230,0.4) inset;
+	border:1px solid gray;
+	border-radius:4px
+}
+
+.libDW-textbox
+{
+	border:1px solid silver;
+	border-radius:2px;
+	background:rgba(255,255,255,0.5);
+	box-shadow:1px 1px 1px silver inset
+}*/
+
+
+.libDW-button .box-child {vertical-align:middle}
+.libDW-button .libDW-icon {margin-right:0.7ex}

@@ -1,0 +1,5 @@
+do # while the partition receives modifications:
+    null
+while true
+
+null

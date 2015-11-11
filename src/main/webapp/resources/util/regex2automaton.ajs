@@ -1,0 +1,427 @@
+from normalization import normalize
+
+export function Automata_OR(A1, A2)
+    let orA := new Automaton
+
+    let finalStates := {} # set of lists
+
+    foreach state in A1.getStates() do
+        orA.addState([1, state])
+
+        if A1.isFinalState(state) then
+            finalStates.add([1, state])
+        end if
+    done
+
+    foreach state in A2.getStates() do
+        orA.addState([2, state])
+
+        if A2.isFinalState(state) then
+            finalStates.add([2, state])
+        end if
+    done
+
+    orA.setInitialState("I")
+    orA.addFinalState("F")
+
+    foreach f in finalStates do
+        orA.addTransition(f, epsilon, "F")
+    done
+
+    foreach t in A1.getTransitions() do
+        orA.addTransition([1, t.startState], t.symbol, [1, t.endState])
+    done
+
+    foreach t in A2.getTransitions() do
+        orA.addTransition([2, t.startState], t.symbol, [2, t.endState])
+    done
+
+    orA.addTransition("I", epsilon, [1, A1.getInitialState()])
+    orA.addTransition("I", epsilon, [2, A2.getInitialState()])
+
+    return orA
+end function
+
+export function Automata_STAR(A)
+   let starA       := new Automaton
+   let finalStates := {} # set of lists
+
+   foreach state in A.getStates() do
+        starA.addState([0, state])
+
+        if A.isFinalState(state) then
+            finalStates.add([0, state])
+        end if
+
+        let init := [0, A.getInitialState()]
+
+        starA.setInitialState("I")
+        starA.addFinalState("F")
+
+        foreach f in finalStates do
+            starA.addTransition(f, epsilon, "F")
+            starA.addTransition(f, epsilon, init)
+        done
+
+        foreach t in A.getTransitions() do
+            starA.addTransition([0, t.startState], t.symbol, [0, t.endState])
+        done
+
+        starA.addTransition("I", epsilon, "F")
+        starA.addTransition("I", epsilon, init)
+    done
+
+    return starA
+end function
+
+export function Automata_CAT(A1, A2)
+    let catA        := new Automaton
+    let finalStates := {} # Set of List
+
+    foreach state in A1.getStates() do
+        catA.addState([1, state])
+
+        if A1.isFinalState(state) then
+            finalStates.add([1, state])
+        end if
+    done
+
+    foreach state in A2.getStates() do
+        if A2.isFinalState(state) then
+            catA.addFinalState([2, state])
+        else
+            catA.addState([2, state])
+        end if
+    done
+
+    foreach f in finalStates do
+        catA.addTransition(f, epsilon, [2, A2.getInitialState()])
+    done
+
+    catA.setInitialState([1, A1.getInitialState()])
+
+    foreach t in A1.getTransitions() do
+        catA.addTransition([1, t.startState], t.symbol, [1, t.endState])
+    done
+
+    foreach t in A2.getTransitions() do
+        catA.addTransition([2, t.startState], t.symbol, [2, t.endState])
+    done
+
+    return catA
+
+end function
+
+#   Regular expressions : Grammar (based on Yliès Falcone's lesson)
+#
+#   regex:
+#      ø
+#      Symbol
+#      regex + regex
+#      regex · regex
+#      regex *
+#      ( regex )
+#
+#
+#   Note: Spaces are ignored "·" can be writen "." or can be ignored.
+#
+#   Symbol:
+#      letter
+#      LETTER
+#      figure
+#      ε
+#      \e             →   ε
+#      \ anyCaracter  →   anyCaracter
+#
+#   Regular Expressions : Semantic
+#
+#      Operator precedence:
+#          *
+#          ·
+#          +
+
+
+export function regexToAutomaton(regex)
+    if regex is undefined then
+        regex := prompt("Enter the regular expression you want to get an automaton of.")
+
+        if regex is null then
+            return
+        end if
+    end if
+
+    let i             := 0
+    let length        := regex.length
+    let a             := "a".charCodeAt(0)
+    let z             := "z".charCodeAt(0)
+    let A             := "A".charCodeAt(0)
+    let Z             := "Z".charCodeAt(0)
+    let zero          := "0".charCodeAt(0)
+    let nine          := "9".charCodeAt(0)
+    let isSymbol      := false
+
+
+    function error()
+        throw new Error("There is a syntax error in your regular expression on character " + i)
+    end function
+
+    function get_lex()
+        if i >= length then
+            isSymbol := false
+            return ""
+        end if
+
+        if not regex[i].trim() then
+            ++i
+            return get_lex()
+        end if
+
+        if regex[i] = "\\" then
+            ++i
+
+            isSymbol := true
+
+            if regex[i]  = "e" then
+               ++i
+               return epsilon
+            end if
+            return regex[i++]
+        else if ")+-*·.(" contains regex[i] then
+            isSymbol := false
+            return regex[i++]
+        else if regex[i] = "ε" then
+            isSymbol := true
+            ++i
+            return epsilon
+        else
+            isSymbol := true
+            let code := regex.charCodeAt(i)
+
+            if (
+               (code >= a     and code <= z   ) or
+               (code >= A     and code <= Z   ) or
+               (code >= zero  and code <= nine)
+            ) then
+               return regex[i++]
+            end if
+        end if
+        error()
+    end function
+
+    function unary(exp, operator)
+        let res := new Object
+
+        res.type := "unary"
+        res.o    := operator
+        res.e    := exp
+
+        return res
+    end function
+
+    function binary(e1, operator, e2)
+        let res := new Object
+
+        if operator = "+" then
+            res.type := "binary"
+            res.o    := "+"
+            res.e1   := e1
+            res.e2   := e2
+
+            return res
+        else if operator = "." then
+            if e1.type = "binary" and e1.o = "+" and not e1.paren then
+                if e2.type = "binary" and e2.o = "+" and not e2.paren then
+
+#                   ·                   +
+#                /    \                / \
+#               +      +              a   +
+#              / \    / \      =>        / \
+#             a   b  c   d              ·   d
+#                                      / \
+#                                     b   c
+
+                    let rese2:= new Object
+                    let e2e1 := new Object
+
+                    e2e1.type := "binary"
+                    e2e1.o    := "."
+                    e2e1.e1   := e1.e2 # b
+                    e2e1.e2   := e2.e1  # c
+
+                    rese2.type := "binary"
+                    rese2.o    := "+"
+                    rese2.e1   := e2e1
+                    rese2.e2   := e2.e2 # d
+
+                    res.type := "binary"
+                    res.o    := "+"
+                    res.e1   :=  e1.e1 # a
+                    res.e2   :=  rese2
+
+                    return res
+                else
+
+#                   ·                    +
+#                /    \                /   \
+#               +    (not +)          a     ·
+#              / \             =>        /    \
+#             a   b                     b   (not +)
+
+                    let rese2 := new Object
+                    rese2.type := "binary"
+                    rese2.o    := "."
+                    rese2.e1   := e1.e2 # b
+                    rese2.e2   := e2
+
+                    res.type := "binary"
+                    res.o    := "+"
+                    res.e1   := e1.e1 # a
+                    res.e2   := rese2
+                    return res
+                end if
+            else if e2.type = "binary" and e2.o = "+" and not e2.paren then
+
+#                      ·                    +
+#                    /   \                 / \
+#               (not +)   +      =>       ·   d
+#                        / \             / \
+#                       c   d      (not +)  c
+
+
+                let rese1 := new Object
+                rese1.type := "binary"
+                rese1.o    := "."
+                rese1.e1   := e1
+                rese1.e2   := e2.e1
+
+                res.type := "binary"
+                res.o    := "+"
+                res.e1   := rese1
+                res.e2   := e2.e2
+                return res
+            else
+#                       ·
+#                      / \          =>  (unchanged)
+#                (not +) (not +)
+
+                 res.type := "binary"
+                 res.o    := "."
+                 res.e1   := e1
+                 res.e2   := e2
+                 return res
+            end if
+        else
+           error() # should never happen
+        end if
+    end function
+
+    function paren(e)
+        e.paren := true
+        return e
+    end function
+
+    function type(symbol, s)
+        let res := new Object
+        res.type := symbol
+        res.s    := s
+        return res
+    end function
+
+    function symbol2expr(l)
+        return type("symbol", l)
+    end function
+
+    function voidexpr()
+        return type("void", undefined)
+    end function
+
+    function get_regex(l, closing)
+        let e1 := nil
+
+        if not l then
+            l := get_lex()
+        end if
+
+        if l = "(" then
+            e1 := paren(get_regex("", true))
+
+            if not i or regex[i - 1] != ")" then
+                error()
+            end if
+        else if isSymbol then
+            e1 := symbol2expr(l)
+        else if not l then
+            return voidexpr()
+        else
+            error() # should never happen
+        end if
+
+        let l2 := get_lex()
+
+        if isSymbol then
+            return binary(e1, ".", get_regex(l2, closing))
+        else
+            while l2 = "*" do
+                e1 := unary(e1, "*")
+                l2 := get_lex()
+                if isSymbol then
+                    return binary(e1, ".", get_regex(l2, closing))
+                end if
+            done
+
+            if l2 = "" then
+                return e1
+            else if l2 = "·" then
+                l2 := "."
+                return binary(e1, l2, get_regex("", closing))
+            else if l2 = "+" or l2 = "." then
+                return binary(e1, l2, get_regex("", closing))
+            else if l2 = "(" then
+                return binary(e1, ".", get_regex("(", closing))
+            else if l2 = ")" then
+                if closing then
+                    return e1
+                end if
+                error()
+            end if
+        end if
+    end function
+
+    function to_automaton(tree)
+        if tree.type = "unary" then
+            if tree.o = "*" then
+                return Automata_STAR(to_automaton(tree.e))
+            else
+                error() # should never ever happen
+            end if
+        else if tree.type = "binary" then
+            if tree.o = "+" then
+               return Automata_OR(to_automaton(tree.e1), to_automaton(tree.e2))
+            else if tree.o = "." then
+               return Automata_CAT(to_automaton(tree.e1), to_automaton(tree.e2))
+            else
+                error() # should never ever happen
+            end if
+        else if tree.type = "symbol" then
+            let R := new Automaton
+            R.setInitialState(0)
+            R.setFinalState(1)
+            R.addTransition(0, tree.s, 1)
+            return R
+        else if tree.type = "void" then
+            let R := new Automaton
+            R.setInitialState(0)
+            return R
+        else
+            error() # should never ever happen
+        end if
+    end function
+
+    return to_automaton(get_regex())
+end function
+
+run(
+    function()
+        return normalize(regexToAutomaton())
+    end function
+)

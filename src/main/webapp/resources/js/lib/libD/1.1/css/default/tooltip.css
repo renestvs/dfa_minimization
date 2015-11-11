@@ -1,0 +1,14 @@
+#LibDToolTip
+{
+	background:rgb(255, 235, 100);
+	background:rgba(255, 235, 100, 0.8);
+	font-family:Sans, sans-serif;
+	color:#555;
+	font-size:0.9em;
+	padding:3px;
+	-moz-border-radius:3px;
+	-khtml-border-radius:3px;
+	border-radius:3px;
+	position:absolute;
+	z-index:100000
+}

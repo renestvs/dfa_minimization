@@ -1,0 +1,8 @@
+Thanks to the people behind the following addresses for the shims:
+ - https://github.com/adalgiso/html5-dataset/blob/master/html5-dataset.js
+ - http://code.eligrey.com/
+under the X11/MIT licences for a part, and Under the public domain for another part.
+
+Thanks Dmitrii Pakhtinov for history.min.js, dual licensed under the MIT and GPL licenses.
+
+Thanks Douglas Crockford for json2.js (Public Domain)

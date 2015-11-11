@@ -1,0 +1,54 @@
+from minimization import minimize
+
+export function automataAreEquivalent(A1, A2, symetryAlreadyDone)
+    if not symetryAlreadyDone then
+        let alphabet := A1.getAlphabet() union A2.getAlphabet()
+
+        A1 := minimize(A1, false, false, alphabet)
+        A2 := minimize(A2, false, false, alphabet)
+    end if
+
+
+    let trans1 := A1.getTransitionFunction()
+    let trans2 := A2.getTransitionFunction()
+
+    let A1Seen           := {} # set of states
+    let renamingFunction := {} # [S1, S2] belongs to Renaming Function iff S1 in A1 is renamed to S2 in A2
+
+    function visit(s1, s2)
+        if A1Seen contains s1 then
+            return (s1, s2) belongs to renamingFunction
+        end if
+
+        if A1.isFinalState(s1) != A2.isFinalState(s2) then
+            return false
+        end if
+
+        A1Seen.add(s1)
+        renamingFunction.add( (s1, s2) )
+
+        foreach symbol in trans1(s1) do
+            if trans1(s1, symbol).card() = trans2(s2, symbol).card() then
+                # If there is a destination state for the symbol for each state
+
+                let q1 := trans1(s1, symbol).getItem()
+                let q2 := trans2(s2, symbol).getItem()
+
+                if not visit(q1, q2) then
+                # we visit (s1', s2') with
+                #  - s1' the destination state of the transition (s1, symbol, dest) in A1
+                #  - s2' the destination state of the corresponding transition (s2, symbol, dest) in A2
+                    return false
+                end if
+            else
+                return false
+            end if
+        done
+
+        return true
+    end function
+
+    return visit(A1.getInitialState(), A2.getInitialState()) and (symetryAlreadyDone or automataAreEquivalent(A2, A1, true))
+end function
+
+run(get_automata, 2, automataAreEquivalent)

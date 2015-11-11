@@ -1,0 +1,7 @@
+a := true
+
+if a = true then
+    alert("hello")
+end if
+
+return a.

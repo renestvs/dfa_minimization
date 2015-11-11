@@ -1,0 +1,17 @@
+determinization.ajs    / Determinize
+minimization.ajs       / Minimize
+completion.ajs         / Complete
+complementation.ajs    / Complement
+product.ajs            / Product
+mirror.ajs             / Mirror
+epsElimination.ajs     / ε-eliminate
+emptyLanguage.ajs      / Test empty language
+infiniteLanguage.ajs   / Test infinite language
+distinguishability.ajs / List differentiable states
+equivalence.ajs        / Equiv. between 2 automata
+normalization.ajs      / Simplify names of the states
+automaton2json.ajs     / JSON representation
+regex2automaton.ajs    / Reg. Exp. → automaton
+regex2minautomaton.ajs / Reg. Exp. → minimized automaton
+automaton2regex.ajs    / Automaton → Reg. Exp.
+unitTests.ajs          / Unit tests for Aude

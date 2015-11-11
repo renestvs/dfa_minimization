@@ -1,0 +1,63 @@
+from Deter import determinization as d
+
+procedure hello()
+    console.log("hello")
+end procedure
+
+export procedure hello2()
+    console.log("soir...")
+end procedure
+
+let a := 3
+let n := a + 7
+
+if a = 2 then
+    console.log(
+        if 42 = answer then
+            1
+        else
+            2
+        fi
+    )
+else
+    console.log({} union {1,2,3})
+fi
+
+if 1 = 2 or 2 = 3 and 3 = 5 then
+    console.log("this is silly")
+end if
+
+try
+    repeat n times
+        hello()
+    end repeat
+except e
+    hello()
+end try
+
+repeat 1_000 times hello() soir() end repeat # fin
+// sdljqsdl
+while n < 20 or 1 = 2 do
+    n++  # fin !
+done
+
+endOfTheUniverse := false
+
+until endOfTheUniverse do
+    endOfTheUniverse := true
+done
+
+let des   := nil;
+let truct := nil;
+let ur    := nil;
+let ing   := nil;
+
+(des, truct, ur, ing) := [1, 2, 3, 4];
+
+unless youAreMad then
+    console.log("salut")
+end unless
+
+for i from 1 to 10 do
+    console.log(i)
+done

@@ -1,0 +1,7 @@
+if e.type = "epsilon" then
+    return res
+else if e.type = "void" then
+    return res
+else
+    return res
+end if

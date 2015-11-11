@@ -1,0 +1,87 @@
+.libD-qt-widget {
+	text-align:left;
+	color:black;
+	text-shadow:none;
+	font-family:"Liberation Sans", "Droid Sans", sans-serif;
+	font-weight:normal;
+}
+
+.libD-qt-widget:not(.libD-qt-shown) {
+	display:none !important;
+}
+
+.libD-qt-layout {
+	height:100%;
+	width:100%;
+}
+
+.libD-qt-QWidget.libD-qt-has-layout {
+	height:100%;
+	width:100%;
+}
+
+.libD-qt-QHBoxLayout {
+	display:-webkit-flex;
+	display:flex;
+    -webkit-justify-content: flex-start;
+    justify-content: flex-start;
+	-webkit-flex-direction: row;
+	flex-direction: row;
+	-webkit-flex-wrap: nowrap;
+	flex-wrap: nowrap
+}
+
+.libD-qt-QVBoxLayout {
+	display:-webkit-flex;
+	display:flex;
+    -webkit-justify-content: flex-start;
+    justify-content: flex-start;
+	-webkit-flex-direction: column;
+	flex-direction: column;
+	-webkit-flex-wrap: nowrap;
+	flex-wrap: nowrap
+}
+
+.libD-qt-layout-item-container {
+	-webkit-flex-grow:1;
+	display:-webkit-flex;
+	flex-grow:1;
+	display:flex;
+}
+
+.libD-qt-layout-item-container > .libD-qt-widget, .libD-qt-QScrollArea > .libD-qt-widget {
+	-webkit-flex-grow:1;
+	flex-grow:1;
+}
+
+.libD-qt-QScrollArea {
+	overflow:auto;
+	position:relative;
+	height:100%;
+	width:100%
+}
+
+.libD-qt-QTabBar {
+	display:flex;
+}
+
+.libD-qt-QTabBar > div {
+	display:inline-block;
+	padding:0 1px;
+	overflow: hidden;
+	white-space:pre;
+}
+
+.libD-qt-pages {
+	height:100%;
+}
+
+.libD-qt-hidden {
+	display:none
+}
+
+.libD-qt-decoration-area > .libD-qt-widget {
+	display:inline-block;
+	margin-right:0.5ex;
+	float:left
+}

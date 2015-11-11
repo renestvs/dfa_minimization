@@ -1,0 +1,134 @@
+from determinization import determinize, isDeterminized
+from completion import complete
+
+export function minimize(A, isAlreadyDeterminized, isAlreadyDeterminizedAndComplete, alphabet)
+
+    # before minimizing, automaton must be determinist and complete.
+    if not isAlreadyDeterminized and not isDeterminized(A) then
+        A := determinize(A)
+    end if
+
+    if not isAlreadyDeterminizedAndComplete then
+        A := complete(A, alphabet)
+    end if
+
+    let MinA  := new Automaton
+    let trans := A.getTransitionFunction(true)
+
+    # we make a partition of the states
+    let partition := {}
+
+    # initial partition: final/non final states are separated
+    foreach q1 in A.getStates() do
+        foreach q2 in A.getStates() do
+            if A.isAcceptingState(q1) = A.isAcceptingState(q2) then
+                partition := partition U { {q1, q2} }
+            end if
+        done
+    done
+
+    let oldCard := -1
+    let found1  := false
+    let found2  := false
+
+    let copyPartition := nil
+
+    do # while the partition receives modifications:
+        oldCard       := partition.card();
+        copyPartition := partition.copy();
+
+        let l         := [];
+
+        let q1 := nil
+        let q2 := nil
+
+        foreach couple in copyPartition do
+            l  := couple.getList()
+            q1 := l[0]
+            q2 := l[l.length-1]
+
+            foreach a in trans(q1) union trans(q2) do
+                if copyPartition does not contain {trans(q1, a), trans(q2, a)} then
+                    partition := partition  \ {couple}
+                    break
+                end if
+            done
+        done
+    until partition.card() = oldCard
+
+    let remainingStates := {}
+
+    function addState(q)
+        if q does not belong to remainingStates then
+            remainingStates := remainingStates U {q}
+
+            if q belongs to trans() then
+                foreach symbol in trans(q) do
+                    addState(trans(q, symbol))
+                done
+            end if
+        end if
+    end function
+
+    addState(A.getInitialState())
+
+    let accepting := false
+    let s := 0
+
+    let newStates := []
+    let oldStates := new Map
+
+    while remainingStates is not empty  do
+        let l := remainingStates.getList()
+
+        newStates[s] := {l[0]}
+
+        oldStates.set(l[0], s)
+
+        accepting := false
+
+        remainingStates.remove(l[0])
+
+        if A.isAcceptingState(l[0]) then
+            accepting := true
+        end if
+
+        for i from 1 to l.length - 1 do
+            if partition contains {l[0], l[i]} then
+                newStates[s] := newStates[s] U {l[i]}
+                oldStates.set(l[i], s)
+                remainingStates := remainingStates \ {l[i]}
+
+                if not accepting and A.isAcceptingState(l[i]) then
+                    accepting := true
+                end if
+            end if
+        done
+
+        MinA.addState(newStates[s])
+
+        if accepting then
+            MinA.setAcceptingState(newStates[s])
+        end if
+
+        if newStates[s].contains(A.getInitialState()) then
+            MinA.setInitialState(newStates[s])
+        end if
+
+        s := s + 1
+    done
+
+    foreach t in A.getTransitions() do
+        if oldStates.has(t.startState) and oldStates.has(t.endState) then
+            MinA.addTransition(
+                newStates[oldStates.get(t.startState)],
+                t.symbol,
+                newStates[oldStates.get(t.endState)]
+            )
+        end if
+    done
+
+    return MinA
+end function
+
+run(minimize, get_automaton(currentAutomaton))

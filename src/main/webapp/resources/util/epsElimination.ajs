@@ -1,0 +1,61 @@
+export function epsElim(A)
+
+    let ElimA := new Automaton
+    let trans := A.getTransitionFunction()
+
+    ElimA.setStates(A.getStates())
+    ElimA.setFinalStates(A.getFinalStates())
+    ElimA.setInitialState(A.getInitialState())
+
+    function canReach(q1, a, q2, alreadySeenStates)
+        if alreadySeenStates contains q1 then
+            return false
+        end if
+
+        if A.hasTransition(q1, a, q2) then
+            return true
+        end if
+
+        alreadySeenStates := alreadySeenStates union {q1}
+
+        if a != epsilon then
+            if A.hasTransition(q1, a, q1) then
+                if canReach(q1, epsilon, q2, alreadySeenStates minus {q1}) then
+                    return true
+                end if
+            end if
+
+            foreach state in trans(q1, a) do
+                if canReach(state, epsilon, q2, alreadySeenStates) then
+                    return true
+                end if
+            done
+        end if
+
+        foreach state in trans(q1, epsilon) do
+            if canReach(state, a, q2, alreadySeenStates) then
+                return true
+            end if
+        done
+
+        return false
+    end function
+
+    foreach q1 in A.getStates() do
+        foreach q2 in A.getStates() do
+            foreach a in A.getAlphabet() do
+                if canReach(q1, a, q2, {}) then
+                    ElimA.addTransition(q1, a, q2)
+                end if
+            done
+
+            if q1 != q2 and A.isFinalState(q2) and canReach(q1, epsilon, q2, {}) then
+                ElimA.setFinalState(q1)
+            end if
+        done
+    done
+
+    return ElimA
+end function
+
+run(epsElim, get_automaton(currentAutomaton))

@@ -1,0 +1,118 @@
+#LibDContextMenu
+{
+	font-family:sans-serif;
+	font-size:0.9em;
+	margin:0;
+	text-align:left;
+	font-style:normal;
+	font-weight:normal;
+	text-shadow:none
+}
+
+#LibDContextMenu, #LibDContextMenu ul
+{
+	background:rgb(247,247,247);
+	background:rgba(255,255,255,0.9);
+	color:#444;
+	padding:3px;
+	-moz-border-radius:3px;
+	-khtml-border-radius:3px;
+	border-radius:3px;
+	-moz-box-shadow:0 0 7px rgba(0,0,0,0.3);
+	-khtml-box-shadow:0 0 7px rgba(0,0,0,0.3);
+	box-shadow:0 0 7px rgba(0,0,0,0.3);
+	position:absolute;
+	z-index:100001;
+	list-style:none;
+}
+
+#LibDContextMenu li
+{
+	position:relative;
+	-moz-border-radius:5px;
+	-khtml-border-radius:5px;
+	border-radius:5px;
+	-moz-transition:150ms;
+	-khtml-transition:150ms;
+	-o-transition:150ms;
+	transition:150ms;
+	white-space:pre;
+}
+
+
+#LibDContextMenu .submenu
+{
+	position:absolute;
+	left:100%;
+	top:0;
+}
+
+#LibDContextMenu .submenu.inactive
+{
+	display:none
+}
+
+#LibDContextMenu .lisubmenu
+{
+	padding-right:20px;
+	background:url(submenu.png) no-repeat center right
+}
+
+#LibDContextMenu li.active
+{
+	background:rgb(150,210,255);
+	background:rgba(138,202,255,0.6);
+}
+
+#LibDContextMenu li.lisubmenu.active
+{
+	background:rgb(150,210,255) url(submenu.png) no-repeat center right;
+	background:rgba(138,202,255,0.6) url(submenu.png) no-repeat center right;
+}
+
+
+#LibDContextMenu .contextmenu-left
+{
+	right:100%;
+	left:auto
+}
+
+#LibDContextMenu .contextmenu-botom
+{
+	bottom:0;
+	top:auto
+}
+
+#LibDContextMenu .textInfo
+{
+	color:gray;
+	font-size:0.95em;
+	text-align:center;
+	margin-bottom:1px;
+	margin-top:1px;
+	background:transparent !important
+}
+
+#LibDContextMenu a
+{
+	color:#444;
+	display:block !important;
+	display:inline;
+	width:100%;
+	outline:none;
+	vertical-align:middle;
+	text-decoration:none
+}
+
+#LibDContextMenu a:focus
+{
+	color:black;
+}
+
+#LibDContextMenu img
+{
+	margin-right:3px;
+	margin-bottom:2px;
+	margin-top:1px;
+	vertical-align:middle;
+}

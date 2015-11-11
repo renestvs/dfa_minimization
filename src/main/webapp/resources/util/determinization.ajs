@@ -1,0 +1,77 @@
+from epsElimination import epsElim
+
+export function determinize(A, complete)
+    A := epsElim(A)
+
+    let DetA     := new Automaton
+    let Alphabet := A.getAlphabet()
+    let trans    := A.getTransitionFunction()
+
+    function addDeterminizedState(newQ)
+        if not DetA.hasState(newQ) then
+            DetA.addState(newQ)
+
+            foreach symbol in Alphabet do
+                let QDest := {}
+
+                foreach state in newQ do
+                    QDest := QDest union trans(state, symbol)
+                done
+
+                if complete or QDest is not empty then
+                    // if completion is not asked, don't create a sink state
+                    addDeterminizedState(QDest)
+                    DetA.addTransition(newQ, symbol, QDest)
+                end if
+            done
+        end if
+
+        foreach state in newQ do
+            if A.isFinalState(state) then
+                DetA.setFinalState(newQ)
+                break
+            end if
+        done
+    end function
+
+    let QInit := {}
+
+    QInit.add(A.getInitialState())
+
+    addDeterminizedState(QInit)
+
+    DetA.setInitialState(QInit)
+
+    return DetA
+end function
+
+export function isDeterminized(A)
+   let trans    := A.getTransitionFunction()
+   let Alphabet := A.getAlphabet()
+
+   foreach state in trans() do
+      // epsilon transition:
+      if trans(state, epsilon) is not empty then
+         return false
+      end if
+
+      foreach symbol in trans(state) do
+         if trans(state, symbol).card() > 1 then
+            return false
+         end if
+      done
+   done
+
+   return true
+end function
+
+run(
+    function ()
+        let A := get_automaton(currentAutomaton)
+
+        if isDeterminized(A) then
+            return A
+        end if
+        return determinize(A)
+    end function
+)

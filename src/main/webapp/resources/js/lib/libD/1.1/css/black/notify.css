@@ -1,0 +1,174 @@
+.libD_notify
+{
+	z-index:1100;
+	position:fixed;
+	right:1ex;
+	bottom:1ex;
+	display:inline-block;
+	padding:10px;
+	margin:10px;
+	max-width:400px;
+
+	font-family:"Liberation Sans", "Nimbus Sans L", Helvetica, sans-serif;
+	font-size:0.9em;
+
+	-moz-border-radius: 10px;
+	-khtml-border-radius: 10px;
+	border-radius: 10px;
+
+	-moz-box-shadow:0 0 5px black;
+	-khtml-box-shadow:0 0 5px black;
+	box-shadow:0 0 5px black;
+
+	background:black;
+	background:rgba(0,0,0,0.8);
+	color:white;
+}
+
+.libD_notify.error
+{
+	background:#900;
+	background:rgba(200,0,0,0.8);
+}
+
+.libD_notify.ok
+{
+	background:green;
+	background:rgba(0,100,0,0.6);
+}
+
+.libD_notify-area
+{
+	position:relative;
+	margin-left:1ex;
+	display:inline-block
+}
+
+.libD_notify-icon
+{
+	float:left;
+	margin-right:5px;
+}
+
+.libD_notify-icon img
+{
+	max-height:75px;
+	max-width:75px;
+}
+
+.libD_notify-title
+{
+	font-weight:bold;
+	font-size:1.2em;
+	text-align:center;
+	display:block;
+	margin-bottom:0.7em;
+	text-shadow:0 0 5px silver;
+}
+
+.libD_notify-descr
+{
+	margin-left:5%;
+	text-align:justify
+}
+
+.libD_notify-pbar
+{
+	width:90%;
+	height:5px;
+	border:1px solid #222;
+	background:#555;
+	background:rgba(100,100,100,0.7);
+	padding:1px;
+	margin-top:0.5em;
+	margin-bottom:0.5em;
+	margin-left:5%;
+}
+
+.libD_notify-pbar div
+{
+	background:#CCC;
+	height:100%;
+	-moz-box-shadow:0 0 5px white;
+}
+
+.libD_notify-pbar, .libD_notify-pbar div
+{
+	-moz-border-radius: 3px;
+	-khtml-border-radius: 3px;
+	border-radius: 3px;
+}
+.libD_notify-progressinfo
+{
+	text-align:center
+}
+
+.libD_notify-close
+{
+	top:8px;
+	right:8px;
+	color:silver;
+	margin-right:5px;
+	font-weight:900;
+	font-size:1.5em;
+	cursor:pointer;
+	position:absolute;
+	z-index:100
+}
+
+.libD_notify-close:hover, .libD_notify-close:focus
+{
+	color:white
+}
+
+.libD_notify-close:active
+{
+	color:yellow
+}
+
+.libD_notify a img
+{
+	border: 0;
+}
+
+.libD_notify a:link, .libD_notify a:visited
+{
+	color:#78F
+}
+
+.libD_notify a:hover
+{
+	color:#ADF
+}
+
+.libD_notify a:focus
+{
+	color:orange
+}
+
+.libD_notify-button
+{
+	background:rgba(0,0,0,0.3);
+	-moz-border-radius: 5px;
+	-khtml-border-radius: 5px;
+	border-radius: 5px;
+	margin-left:4px;
+	margin-right:4px;
+	margin-top:1em;
+	color:#CCC;
+	font-weight:bold;
+	border:1px solid rgba(255,255,255,0.3);
+	padding:2px;
+	padding-left:4px;
+	padding-right:4px;
+}
+
+.libD_notify-button:hover
+{
+	background:rgba(100,100,100,0.3);
+	color:white
+}
+.libD_notify-buttonarea
+{
+	text-align:center;
+}
