@@ -16,7 +16,7 @@ public class State implements Visualizable, Serializable{
 	private int id;
 	private static int nextId;
 
-	private Long number;
+	private String number;
 	
 	private boolean accept;
 
@@ -40,11 +40,11 @@ public class State implements Visualizable, Serializable{
 	}
 	
 	
-	public Long getNumber() {
+	public String getNumber() {
 		return number;
 	}
 
-	public void setNumber(Long number) {
+	public void setNumber(String number) {
 		this.number = number;
 	}
 	
@@ -74,7 +74,7 @@ public class State implements Visualizable, Serializable{
 	@Override
 	public String toString() {
 		return new StringBuilder("State: ").
-			append(id).
+			append(number).
 			toString();
 	}
 
@@ -82,9 +82,9 @@ public class State implements Visualizable, Serializable{
 	public String toDot() {
 		StringBuilder sb = new StringBuilder();
 		if (accept) {
-			sb.append(id+ " [shape=doublecircle,label=\""+id+"\"]\n");
+			sb.append(number+ " [shape=doublecircle,label=\""+number+"\"]\n");
 		}else{
-			sb.append(id+ " [shape=circle,label=\""+id+"\"]\n");
+			sb.append(number+ " [shape=circle,label=\""+number+"\"]\n");
 		}
 
 		for(Transition t : getOutgoing()) {

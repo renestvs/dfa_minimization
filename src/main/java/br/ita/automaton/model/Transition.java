@@ -97,13 +97,13 @@ public class Transition implements Visualizable, Serializable {
 	//@Override
 	public String toDot() {
 		if(isEpsilon()) {
-			return from.getId()+ " -> "+to.getId()+"[label=\""+'ε'+"\",style=\"dotted\"]"+"\n";
+			return from.getNumber()+ " -> "+to.getNumber()+"[label=\""+'ε'+"\",style=\"dotted\"]"+"\n";
 		}
 		else if(isAlphabet()) {
-			return from.getId()+ " -> "+to.getId()+"[label=\""+'Σ'+"\"]"+"\n";
+			return from.getNumber()+ " -> "+to.getNumber()+"[label=\""+'Σ'+"\"]"+"\n";
 		}
 		else {
-			return from.getId()+ " -> "+to.getId()+"[label=\""+character+"\"]"+"\n";
+			return from.getNumber()+ " -> "+to.getNumber()+"[label=\""+character+"\"]"+"\n";
 		}
 	}
 }

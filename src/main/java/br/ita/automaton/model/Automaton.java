@@ -39,7 +39,7 @@ public abstract class Automaton implements Visualizable, Serializable{
 		}
 		states.add(state);
 		if(state.getNumber() == null) {
-			state.setNumber(++stateNumber);
+			state.setNumber(String.valueOf(++stateNumber));
 		}
 	}
 	
@@ -98,7 +98,7 @@ public abstract class Automaton implements Visualizable, Serializable{
 	public String toDot() {
 		StringBuilder sb = new StringBuilder("digraph Automaton {\n");
 		sb.append("  rankdir = LR;\n");
-		sb.append("Start " + " -> "+initialState.getId()+"\n");
+		sb.append("Start " + " -> "+initialState.getNumber()+"\n");
 		for(State state : states) {
 			sb.append(state.toDot());
 		}

@@ -196,6 +196,9 @@ public class DFAMinimizer {
 			if(state.isAccept()) {
 				minimizedState.setAccept(true);
 			}
+			
+			//minimizedState.setNumber(set.toString());
+			logger.info("set.toString(): "  + set.toString());
 		}
 		
 		boolean first = true;
