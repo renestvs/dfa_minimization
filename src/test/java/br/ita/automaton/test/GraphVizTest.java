@@ -9,12 +9,10 @@ public class GraphVizTest {
 	@Test
 	public void visualTest() {
 		GraphViz gv = new GraphViz();
-		System.out.println(gv.TEMP_DIR);
 		gv.addln(gv.start_graph());
 		gv.addln("A -> B;");
 		gv.addln("A -> C;");
 		gv.addln(gv.end_graph());
-		System.out.println(gv.getDotSource());
 
 		gv.increaseDpi();   // 106 dpi
 

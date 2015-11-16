@@ -32,8 +32,10 @@ public abstract class Automaton implements Visualizable, Serializable{
 	 * Add a new state to automaton
 	 * 
 	 * @param state state to add. Must not exist in automaton.
+	 * 
+	 * @return #TODO
 	 */
-	public void addState(State state) {
+	public State addState(State state) {
 		if(states.contains(state)){
 			throw new RuntimeException("Trying to add existing state!");
 		}
@@ -41,6 +43,7 @@ public abstract class Automaton implements Visualizable, Serializable{
 		if(state.getNumber() == null) {
 			state.setNumber(String.valueOf(++stateNumber));
 		}
+		return state;
 	}
 	
 	/**
