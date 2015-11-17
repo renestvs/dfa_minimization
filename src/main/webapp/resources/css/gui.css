@@ -593,7 +593,9 @@ td, th {
 }
 
 #pane-localfile {
-   float:right
+    float: none;
+    padding: 5% 10%;
+    text-align: center;
 }
 
 #pane-localfile button {
@@ -609,7 +611,8 @@ td, th {
 }
 
 #pane-distantfile {
-   float:left
+   float:left;
+   display:none;
 }
 
 p img {

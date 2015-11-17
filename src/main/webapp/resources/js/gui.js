@@ -832,8 +832,8 @@
 
                         win = libD.newWin({
                             title:   title,
-                            height:  "80%",
-                            width:   "75%",
+                            height:  "15%",
+                            width:   "50%",
                             left:    "12.5%",
                             top:     "12.5%",
                             show:    true,
