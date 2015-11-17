@@ -11,34 +11,14 @@ import br.ita.automaton.service.DFAService;
 
 public class DFATest {
 
-/* 
-//	0
-//	1
-//	3
-//	4
-//
-//	2
-//
-//	0 b 0
-//	0 a 1
-//	1 a 0
-//	1 b 2
-//	4 b 2
-//	2 b 4
-//	4 a 3
-//	3 a 3
-//	3 b 3
-//	2 a 3
-*/
-	
 	private DFA automaton;
 	private DFAService service = new DFAService();
-	private String input = "0\r\n1\r\n2\r\n3\r\n4\r\n \r\n2\r\n \r\n0 b 0\r\n0 a 1\r\n1 a 0\r\n1 b 2\r\n4 b 2\r\n2 b 4\r\n4 a 3\r\n3 a 3\r\n3 b 3\r\n2 a 3";
+	private String input = "0\r\n1\r\n3\r\n4\r\n\r\n2\r\n\r\n0 b 0\r\n0 a 1\r\n1 a 0\r\n1 b 2\r\n4 b 2\r\n2 b 4\r\n4 a 3\r\n3 a 3\r\n3 b 3\r\n2 a 3";
 	
 	
 	@Test
 	public void testMountingDFA() {
-		DFA dfa = service.mountingDFA(input);
+		DFA dfa = service.createDFA(input);
 		
 		assertTrue(dfa.getStates().size() == 5);
 		
