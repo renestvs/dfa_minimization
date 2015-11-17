@@ -1,0 +1,8 @@
+<settings>
+  <servers>
+    <server>
+      <id>automaton.ita.br</id>
+      <privateKey>${user.home}/.ssh/id_rsa</privateKey>
+    </server>
+  </servers>
+</settings>

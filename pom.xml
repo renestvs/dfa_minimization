@@ -19,9 +19,9 @@
     <!-- BUILD -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <maven.compiler.target>1.6</maven.compiler.target>
-    <maven.compiler.source>1.6</maven.compiler.source>
-    <maven.compiler.plugin>2.3.2</maven.compiler.plugin>
+    <maven.compiler.target>1.7</maven.compiler.target>
+    <maven.compiler.source>1.7</maven.compiler.source>
+    <maven.compiler.plugin>3.2.1</maven.compiler.plugin>
   </properties>
   
   <dependencies>
@@ -164,19 +164,43 @@
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
 		</dependency>
-		
    </dependencies>
   
+   <distributionManagement>
+    <repository>
+      <id>heroku.repo</id>
+      <name>dfa_minimization</name>
+      <url>git@heroku.com:stark-tor-5385</url>
+    </repository>
+    <snapshotRepository>
+      <id>github.repo</id>
+      <name>dfa_minimization</name>
+      <url>https://github.com/renestvs/dfa_minimization</url>
+    </snapshotRepository>
+  </distributionManagement>
+  
    <build>
-	  <plugins>
-	    <plugin>
-	      <artifactId>maven-compiler-plugin</artifactId>
-	      <version>${maven.compiler.plugin}</version>
-	        <configuration>
-	          <source>${maven.compiler.source}</source>
-	          <target>${maven.compiler.target}</target>
-	        </configuration>
-	    </plugin>
-	  </plugins>
-	</build>
+    <plugins>
+      <plugin>
+        <groupId>com.jcabi</groupId>
+        <artifactId>jcabi-heroku-maven-plugin</artifactId>
+        <version>0.8</version>
+        <configuration>
+          <server>automaton.ita.br</server> <!-- name from settings.xml -->
+          <name>automaton_project</name>
+          <artifacts>
+            <artifact>${project.groupId}:${project.artifactId}:jar::${project.version}</artifact>
+          </artifacts>
+          <procfile>web: java -Xmx256m -jar ./${project.artifactId}.jar ${PORT}</procfile>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>deploy</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>
