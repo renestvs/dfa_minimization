@@ -2,13 +2,19 @@ package br.ita.automaton.service;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
 import br.ita.automaton.controller.DFAController;
 import br.ita.automaton.core.dfa.DFA;
 import br.ita.automaton.core.dfa.DFAMinimizer;
+import br.ita.automaton.core.dfa.DFAState;
 import br.ita.automaton.model.State;
 import br.ita.automaton.model.Transition;
 import br.ita.automaton.util.TransitionType;
@@ -19,10 +25,10 @@ public class DFAService {
 	private DFA automaton;
 	private GraphViz automatonVisual = new GraphViz();;
 	private String type = "jpg";
-	private String repesentationType= "dot";
+	private String representationType = "dot";
 	
 	private String DFAPath;
-	private String DFAminizedPath;
+	private String DFAMinimizedPath;
 	
 	private static Logger logger = Logger.getLogger(DFAController.class);
 	
@@ -32,7 +38,7 @@ public class DFAService {
 	
 	public boolean DFAMinimizer (String path, String dfa){
 		
-		mountingDFA(dfa);
+		createDFA(dfa);
 		
 		if (visualDFA(automaton, path, "DFA")){
 			setDFAPath("DFA");
@@ -40,29 +46,57 @@ public class DFAService {
 		DFA minimized = DFAMinimizer.minimize(automaton);
 
 		if(visualDFA(minimized, path, "DFAminimized")){
-			setDFAminizedPath("DFAminimized");
+			setDFAMinimizedPath("DFAminimized");
 		}
 		
 		return true;
 	}
 
-	public DFA mountingDFA(String dfa) {
+	public DFA createDFA(String dfa) {
 		
 		this.automaton = new DFA();
 		
+		Map<String, State> automatonSetStateMapping = new HashMap<String, State>();
+		
+		LinkedList<State> DFAStates = new LinkedList<State>();
+		LinkedHashSet<Character> DFAAlphabet = new LinkedHashSet<Character>();
+		
 		String[] lines = dfa.split(System.getProperty("line.separator"));
+		
 		boolean state = true;
 		boolean endState = false;
-		boolean addStates = false;
 		boolean setTransitions = false;
-	    String alphabet [] = new String [1000];
+	    
+	    boolean initial = true;
 		
 		for (String string : lines) {
+			logger.info("String: " + string);
 			
-			//3rd setTransitions
+			//3rd set Transitions
 			if(setTransitions){
 				if(string.length()!=0){
-					logger.info("setTransitions: " + string);
+					
+					String[] DFATransitionMapping = string.split(" ");
+					
+					State DFAState = automatonSetStateMapping.get(DFATransitionMapping[0]);
+					State DFAToState = automatonSetStateMapping.get(DFATransitionMapping[2]);
+					
+					new Transition(DFAState, DFAToState, TransitionType.CHARACTER, DFATransitionMapping[1].charAt(0));
+					
+					boolean repeat = false;
+					
+					for (Iterator iterator = DFAAlphabet.iterator(); iterator.hasNext();) {
+						Character character = (Character) iterator.next();
+						if (character.equals(DFATransitionMapping[1].charAt(0))){
+							repeat = true;
+						}
+					}
+					
+					if (!repeat){
+						DFAAlphabet.add(DFATransitionMapping[1].charAt(0));
+						logger.info("Add char: " + DFATransitionMapping[1].charAt(0));
+					}
+
 				}else{
 					setTransitions = false;
 					logger.info("end");
@@ -72,18 +106,35 @@ public class DFAService {
 			//2nd set endStates
 			if(endState){
 				if(string.length()!=0){
-					logger.info("endstate: " + string);
+					
+					State DFAstate = new DFAState();
+					DFAstate.setNumber(string);
+					DFAstate.setAccept(true);
+					automatonSetStateMapping.put(string, DFAstate);
+					State DFAState = automatonSetStateMapping.get(string);
+					DFAStates.addLast(DFAState);
+
 				}else{
 					endState = false;
 					setTransitions = true;
-					//TODO addStates here
 				}
 			}
 			
 			//1st set states
 			if (state){
 				if(string.length()!=0){
-					logger.info("state: " + string);
+					
+					State DFAstate = new DFAState();
+					DFAstate.setNumber(string);
+					automatonSetStateMapping.put(string, DFAstate);
+					State DFAState = automatonSetStateMapping.get(string);
+		
+					if (initial) {
+						DFAStates.addFirst(DFAState);
+						initial = false;
+					} else {
+						DFAStates.addLast(DFAState);
+					}
 				}else{
 					state = false;
 					endState = true;
@@ -91,66 +142,20 @@ public class DFAService {
 			}
 			
 		}
-						
-		State state0 = new State();
-		state0.setNumber("11");
-		State state1 = new State();
-		state1.setNumber("22");
-		State state2 = new State();
-		state2.setNumber("33");
-		State state3 = new State();
-		state3.setNumber("44");
-		State state4 = new State();
-		state4.setNumber("55");
-		State state5 = new State();
-		state5.setNumber("66");
-		State state6 = new State();
-		state6.setNumber("77");
-		State state7 = new State();
-		state7.setNumber("88");
 		
-		//add states
-		automaton.addState(state0);
-		automaton.setInitialState(state0);
-		automaton.addState(state1);
-		automaton.addState(state2);
-		automaton.addState(state3);
-		automaton.addState(state4);
-		automaton.addState(state5);
-		automaton.addState(state6);
-		automaton.addState(state7);
-		
-		//set end states
-		state2.setAccept(true);
-		state7.setAccept(true);
-		
-		//set transitions
-		new Transition(state0, state1, TransitionType.CHARACTER, 'a');
-		new Transition(state0, state4, TransitionType.CHARACTER, 'b');
-		
-		new Transition(state1, state5, TransitionType.CHARACTER, 'a');
-		new Transition(state1, state2, TransitionType.CHARACTER, 'b');
-		
-		new Transition(state2, state3, TransitionType.CHARACTER, 'a');
-		new Transition(state2, state6, TransitionType.CHARACTER, 'b');
-		
-		new Transition(state3, state3, TransitionType.CHARACTER, 'a');
-		new Transition(state3, state3, TransitionType.CHARACTER, 'b');
-		
-		new Transition(state4, state1, TransitionType.CHARACTER, 'a');
-		new Transition(state4, state4, TransitionType.CHARACTER, 'b');
-		
-		new Transition(state5, state1, TransitionType.CHARACTER, 'a');
-		new Transition(state5, state4, TransitionType.CHARACTER, 'b');
-		
-		new Transition(state6, state3, TransitionType.CHARACTER, 'a');
-		new Transition(state6, state7, TransitionType.CHARACTER, 'b');
-		
-		new Transition(state7, state3, TransitionType.CHARACTER, 'a');
-		new Transition(state7, state6, TransitionType.CHARACTER, 'b');
+		boolean first = true;
+		for (State DFAState : DFAStates) {
+			if (first) {				
+			    this.automaton.addState(DFAState);
+			    this.automaton.setInitialState(DFAState);
+				first = false;
+			} else {
+				this.automaton.addState(DFAState);
+			}
+		}
 		
 		//set alphabet
-	    automaton.setAlphabet(new LinkedHashSet<Character>(Arrays.asList('a', 'b')));
+	    this.automaton.setAlphabet(DFAAlphabet);
 		
 		return this.automaton;
 	}
@@ -160,7 +165,7 @@ public class DFAService {
 		automatonVisual.addln(automaton.toDot());
 		automatonVisual.increaseDpi();   
 		automatonVisual.writeGraphToFile(automatonVisual.getGraph(
-				automatonVisual.getDotSource(), type, repesentationType), 
+				automatonVisual.getDotSource(), type, representationType), 
 				filePath(path, filename));
 		automatonVisual.clearGraph();
 		return true;
@@ -179,12 +184,12 @@ public class DFAService {
 		this.DFAPath = "/automaton/resources/img/" + filename + "." + type;
 	}
 
-	public String getDFAminizedPath() {
-		return DFAminizedPath;
+	public String getDFAMinimizedPath() {
+		return DFAMinimizedPath;
 	}
 
-	public void setDFAminizedPath(String filename) {
-		DFAminizedPath = "/automaton/resources/img/" + filename + "." + type;
+	public void setDFAMinimizedPath(String filename) {
+		DFAMinimizedPath = "/automaton/resources/img/" + filename + "." + type;
 	}
 
 

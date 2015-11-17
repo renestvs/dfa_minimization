@@ -36,11 +36,11 @@ public class DFAController {
 		
 		getDFA().DFAMinimizer(servletContext.getRealPath("/"), automaton);
 		logger.info("DFA PATH: " + getDFA().getDFAPath()); 
-		logger.info("MINIMIZED PATH: " + getDFA().getDFAminizedPath());
+		logger.info("MINIMIZED PATH: " + getDFA().getDFAMinimizedPath());
 		
 		ModelAndView mv = new ModelAndView("dfa_minimizer_results");
 		mv.addObject("dfa", getDFA().getDFAPath());
- 		mv.addObject("minimized", getDFA().getDFAminizedPath());
+ 		mv.addObject("minimized", getDFA().getDFAMinimizedPath());
  		return mv;
 	}
 
