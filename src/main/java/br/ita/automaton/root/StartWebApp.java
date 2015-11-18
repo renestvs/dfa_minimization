@@ -12,7 +12,7 @@ public class StartWebApp {
         Server server = new Server(port);
         WebAppContext webapp = new WebAppContext();
         webapp.setContextPath("/");
-        webapp.setWar("target/automaton-0.0.1-SNAPSHOT.war");
+        webapp.setWar("target/classes/automaton-0.0.1-SNAPSHOT.war");
         server.setHandler(webapp);
 
         server.start();
