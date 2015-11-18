@@ -141,25 +141,22 @@ public class DFAMinimizer {
 			for (State state : set) {
 				State toState = automaton.getState(state, c);
 				logger.info("split - state: " + state.toString());
-				logger.info("split - toState" + toState.toString());
 				
 				Set<State> toSet = toState == null ? null : stateSetMapping.get(toState);
 				logger.info("split - toState == null: " + (toState == null));
-				logger.info("split - toSet " + toSet.toString());
 				
 				logger.info("split - first: " + first);
 				if (first) {
+					logger.info("split - if first true ");
 					
 					firstToSet = toSet;
-					logger.info("split - if first true " + firstToSet.toString());
 					firstSet.add(state);
-					logger.info("split - if first true add state in firstSet " + firstSet.toString());
+					logger.info("split - if first true add state in firstSet");
 
 					first = false;
 				} else if (firstToSet == null && toSet == null || firstToSet != null && firstToSet.equals(toSet)) {
 					firstSet.add(state);
-					logger.info("split - else if first false add state " + state.toString());
-					logger.info("split - else if first false add firstToSet " + firstSet.toString());
+					logger.info("split - else if first false add firstToSet ");
 				} else {
 					logger.info("split - else add secondSet " + state.toString());
 					secondSet.add(state);
@@ -258,8 +255,6 @@ public class DFAMinimizer {
 					minimizedToState.setNumber(updateStateNumber(toStateSet));
 					
 					new Transition(minimizedState, minimizedToState, TransitionType.CHARACTER, c);
-					//logger.debug("minimizedState = " + minimizedState + " | minimizedToState = " + minimizedToState
-					//		+ " | TransitionType.CHARACTER = " + TransitionType.CHARACTER + " | c = " + c);
 				}
 			}
 
