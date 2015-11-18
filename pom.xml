@@ -21,7 +21,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <maven.compiler.target>1.7</maven.compiler.target>
     <maven.compiler.source>1.7</maven.compiler.source>
-    <maven.compiler.plugin>3.2.1</maven.compiler.plugin>
+    <maven.compiler.plugin>2.3.2</maven.compiler.plugin>
   </properties>
   
   <dependencies>
@@ -164,6 +164,28 @@
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
 		</dependency>
+		
+		<!-- Heroku Deploy -->
+		<dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-server</artifactId>
+            <version>7.4.5.v20110725</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-deploy</artifactId>
+            <version>7.4.5.v20110725</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-servlet</artifactId>
+            <version>7.4.5.v20110725</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
+        </dependency>
    </dependencies>
   
    <distributionManagement>
@@ -179,28 +201,41 @@
     </snapshotRepository>
   </distributionManagement>
   
-   <build>
-    <plugins>
-      <plugin>
-        <groupId>com.jcabi</groupId>
-        <artifactId>jcabi-heroku-maven-plugin</artifactId>
-        <version>0.8</version>
-        <configuration>
-          <server>automaton.ita.br</server> <!-- name from settings.xml -->
-          <name>automaton_project</name>
-          <artifacts>
-            <artifact>${project.groupId}:${project.artifactId}:jar::${project.version}</artifact>
-          </artifacts>
-          <procfile>web: java -Xmx256m -jar ./${project.artifactId}.jar ${PORT}</procfile>
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>deploy</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
+  <build>
+     <plugins>
+         <plugin>
+             <groupId>org.apache.maven.plugins</groupId>
+             <artifactId>maven-compiler-plugin</artifactId>
+             <version>${maven.compiler.plugin}</version>
+             <configuration>
+                 <source>${maven.compiler.source}</source>
+                 <target>${maven.compiler.target}</target>
+             </configuration>
+         </plugin>
+
+         <plugin>
+             <groupId>org.codehaus.mojo</groupId>
+             <artifactId>appassembler-maven-plugin</artifactId>
+             <version>1.1.1</version>
+             <executions>
+                 <execution>
+                     <phase>package</phase>
+                     <goals>
+                         <goal>assemble</goal>
+                     </goals>
+                     <configuration>
+                         <assembleDirectory>target</assembleDirectory>
+                         <generateRepository>true</generateRepository>
+                         <programs>
+                             <program>
+                                 <mainClass>br.ita.automaton.root.StartWebApp</mainClass>
+                                 <name>webapp</name>
+                             </program>
+                         </programs>
+                     </configuration>
+                 </execution>
+             </executions>
+         </plugin>
+     </plugins>
+   </build>
 </project>

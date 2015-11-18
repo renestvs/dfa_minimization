@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT -jar  target/automaton-0.0.1-SNAPSHOT.war
+web: sh target/bin/webapp
