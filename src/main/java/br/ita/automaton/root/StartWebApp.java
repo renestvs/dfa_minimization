@@ -11,7 +11,7 @@ public class StartWebApp {
         int port = (portStr == null) ? 8085 : Integer.parseInt(portStr);
         Server server = new Server(port);
         WebAppContext webapp = new WebAppContext();
-        webapp.setContextPath("/automaton/");
+        webapp.setContextPath("/");
         webapp.setWar("target/automaton-0.0.1-SNAPSHOT.war");
         server.setHandler(webapp);
 
