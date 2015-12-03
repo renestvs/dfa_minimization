@@ -36,23 +36,53 @@ public class DFAService {
 		
 	}
 	
-	public boolean DFAMinimizer (String path, String dfa){
-		
-		createDFA(dfa);
-		
-		if (visualDFA(automaton, path, "DFA")){
-			setDFAPath("DFA");
+	DFA validDfa = new DFA();
+	LinkedHashSet<State> reachableDfaStates = new LinkedHashSet<State>();	
+	public void setUnreachableStates(State state) {
+		if(state.isVisited()) {
+			return;
 		}
-		DFA minimized = DFAMinimizer.minimize(automaton);
+		state.setVisited(true);
+		reachableDfaStates.add(state);
+		
+		try {
+			validDfa.addState(state);
+		} catch(RuntimeException e) {
+			logger.debug("Estado Já Existente!");
+		}
+		
+		for (Transition transition : state.getOutgoing()) {
+			
+			logger.debug("Atual: " + state.getNumber());
+			logger.debug("Simbolo: " + transition.getCharacter());
+			logger.debug("Proximo: " + transition.getTo().getNumber());
+			logger.debug("\n");
 
-		if(visualDFA(minimized, path, "DFAminimized")){
-			setDFAMinimizedPath("DFAminimized");
+			transition.getTo().setReachable(true);
+			
+			setUnreachableStates(transition.getTo());
+		}
+	}
+	
+	
+	public boolean DFAMinimizer (String path, String stringDFA){
+		
+		DFA dfa = createDFA(stringDFA);	
+		setUnreachableStates(dfa.getInitialState());
+		if (visualDFA(validDfa, path, "dfa")){
+			setDFAPath("dfa");
+		}
+	
+		DFA minimized = DFAMinimizer.minimize(validDfa);
+		if(visualDFA(minimized, path, "dfa-minimized")){
+			setDFAMinimizedPath("dfa-minimized");
 		}
 		
 		return true;
 	}
 
 	public DFA createDFA(String dfa) {
+		logger.debug("criarDFA (start");
 		
 		this.automaton = new DFA();
 		
@@ -61,22 +91,24 @@ public class DFAService {
 		LinkedList<State> DFAStates = new LinkedList<State>();
 		LinkedHashSet<Character> DFAAlphabet = new LinkedHashSet<Character>();
 		
+		// cada elemento do vetor armazena uma linha da string
 		String[] lines = dfa.split(System.getProperty("line.separator"));
 		
+		boolean initial = true;
 		boolean state = true;
+		
 		boolean endState = false;
 		boolean setTransitions = false;
 	    
-	    boolean initial = true;
-		
-		for (String string : lines) {
-			logger.info("String: " + string);
+	    
+		for (String line : lines) {
+			logger.info("line: " + line);
 			
 			//3rd set Transitions
 			if(setTransitions){
-				if(string.length()!=0){
+				if(line.length()!=0){
 					
-					String[] DFATransitionMapping = string.split(" ");
+					String[] DFATransitionMapping = line.split(" ");
 					
 					State DFAState = automatonSetStateMapping.get(DFATransitionMapping[0]);
 					State DFAToState = automatonSetStateMapping.get(DFATransitionMapping[2]);
@@ -105,13 +137,13 @@ public class DFAService {
 			
 			//2nd set endStates
 			if(endState){
-				if(string.length()!=0){
+				if(line.length()!=0){
 					
 					State DFAstate = new DFAState();
-					DFAstate.setNumber(string);
+					DFAstate.setNumber(line);
 					DFAstate.setAccept(true);
-					automatonSetStateMapping.put(string, DFAstate);
-					State DFAState = automatonSetStateMapping.get(string);
+					automatonSetStateMapping.put(line, DFAstate);
+					State DFAState = automatonSetStateMapping.get(line);
 					DFAStates.addLast(DFAState);
 
 				}else{
@@ -122,12 +154,12 @@ public class DFAService {
 			
 			//1st set states
 			if (state){
-				if(string.length()!=0){
-					
+				if(line.length()!=0){					
 					State DFAstate = new DFAState();
-					DFAstate.setNumber(string);
-					automatonSetStateMapping.put(string, DFAstate);
-					State DFAState = automatonSetStateMapping.get(string);
+					DFAstate.setNumber(line);
+					
+					automatonSetStateMapping.put(line, DFAstate);
+					State DFAState = automatonSetStateMapping.get(line);
 		
 					if (initial) {
 						DFAStates.addFirst(DFAState);
@@ -148,7 +180,10 @@ public class DFAService {
 			if (first) {				
 			    this.automaton.addState(DFAState);
 			    this.automaton.setInitialState(DFAState);
-				first = false;
+			    
+			    validDfa.addState(DFAState);
+			    validDfa.setInitialState(DFAState);
+			    first = false;
 			} else {
 				this.automaton.addState(DFAState);
 			}
@@ -156,6 +191,9 @@ public class DFAService {
 		
 		//set alphabet
 	    this.automaton.setAlphabet(DFAAlphabet);
+	    validDfa.setAlphabet(DFAAlphabet);
+
+		logger.debug("criarDFA (end");
 		
 		return this.automaton;
 	}

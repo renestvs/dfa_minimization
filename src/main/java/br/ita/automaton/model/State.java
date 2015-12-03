@@ -104,4 +104,27 @@ public class State implements Visualizable, Serializable{
 	private static int getNextId() {
 		return nextId++;
 	}
+	
+	// testes
+	
+	private boolean visited;
+
+	public boolean isVisited() {
+		return visited;
+	}
+
+	public void setVisited(boolean visited) {
+		this.visited = visited;
+	}
+	
+	private boolean reachable;
+
+	public boolean isReachable() {
+		return reachable;
+	}
+
+	public void setReachable(boolean reachable) {
+		this.reachable = reachable;
+	}
+	
 }

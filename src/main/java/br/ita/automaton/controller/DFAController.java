@@ -32,15 +32,36 @@ public class DFAController {
 	
 	@RequestMapping(value = "/dfa_minimizer/results",  method = RequestMethod.POST)
 	public ModelAndView dfaMinimization(
-			@RequestParam(value = "automaton", required = false, defaultValue = "Empty") String automaton) {
+			@RequestParam(
+					value = "automaton", 
+					required = false, 
+					defaultValue = "Empty") 
+			String automaton) {
 		
-		getDFA().DFAMinimizer(servletContext.getRealPath("/"), automaton);
-		logger.info("DFA PATH: " + getDFA().getDFAPath()); 
-		logger.info("MINIMIZED PATH: " + getDFA().getDFAMinimizedPath());
+		logger.debug("dfaMinimization (start)");		
+
+		String dfasPath = servletContext.getRealPath("/");
+		/* DFAs Path (Windows/Eclipse): 
+		 * <proot>\workspace\.metadata\.plugins\
+		 * org.eclipse.wst.server.core\tmp1\
+		 * wtpwebapps\automaton\resources\img
+		 */
 		
-		ModelAndView mv = new ModelAndView("dfa_minimizer_results");
-		mv.addObject("dfa", getDFA().getDFAPath());
- 		mv.addObject("minimized", getDFA().getDFAMinimizedPath());
+		DFAService service = new DFAService();
+		service.DFAMinimizer(dfasPath, automaton);
+		
+		logger.debug("automaton:\n" + automaton);
+
+		logger.info("Path (DFA): " 			 + service.getDFAPath()); 
+		logger.info("Path (DFA Minimized): " + service.getDFAMinimizedPath());
+	
+		ModelAndView mv = new ModelAndView("dfa_minimizer_results");		
+		// variáveis disponíveis na camada de visualização (view)
+		mv.addObject("dfa_path", 		service.getDFAPath());
+ 		mv.addObject("minimized_path",	service.getDFAMinimizedPath()); 
+ 		
+ 		logger.debug("dfaMinimization (end)"); 		
+ 		
  		return mv;
 	}
 
