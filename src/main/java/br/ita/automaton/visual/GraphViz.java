@@ -32,8 +32,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
+import java.util.Enumeration;
 import java.util.Properties;
-import org.apache.log4j.Logger;
 
 /**
  * <dl>
@@ -64,7 +64,6 @@ import org.apache.log4j.Logger;
  *
  * </dl>
  *
- * @version v0.6.1, 2015/12/3 (December) -- Logging added by Airton Lastori.
  * @version v0.6, 2013/11/28 (November) -- Patch of Olivier Duplouy is added.
  *          Now you can specify the representation type of your graph: dot,
  *          neato, fdp, sfdp, twopi, circo
@@ -83,23 +82,19 @@ import org.apache.log4j.Logger;
  */
 public class GraphViz {
 
-        private static Logger logger = Logger.getLogger(GraphViz.class);
-
 	/**
 	 * Load the config.properties file.
 	 */
-        private final static String cfgProp = "/config.properties";
+	private final static String cfgProp = "/config.properties";
 	private final static Properties configFile = new Properties() {
-            private final static long serialVersionUID = 1L;
-            {
-                    try {
-                            load(GraphViz.class.getResourceAsStream(cfgProp));
-                            logger.info("Configuration file read: " + cfgProp);
-                    } catch (Exception e) {
-                            System.err.println(e);
-                            logger.error(e);
-                    }
-            }
+		private final static long serialVersionUID = 1L;
+		{
+			try {
+				load(GraphViz.class.getResourceAsStream(cfgProp));
+			} catch (Exception e) {
+				System.err.println(e);
+			}
+		}
 	};
 
 	/**
@@ -125,7 +120,7 @@ public class GraphViz {
 	 * Define the index in the image size array.
 	 */
 	private int currentDpiPos = 7;
-        
+
 	/**
 	 * Increase the image size (dpi).
 	 */
@@ -224,12 +219,9 @@ public class GraphViz {
 			dot = writeDotSourceToFile(dot_source);
 			if (dot != null) {
 				img_stream = get_img_stream(dot, type, representationType);
-				if (dot.delete() == false){
-                                        String strErr = "Warning: " + dot.getAbsolutePath()
-							+ " could not be deleted!";
-					System.err.println(strErr);
-                                        logger.error(strErr);
-                                }
+				if (dot.delete() == false)
+					System.err.println("Warning: " + dot.getAbsolutePath()
+							+ " could not be deleted!");
 				return img_stream;
 			}
 			return null;
@@ -300,8 +292,8 @@ public class GraphViz {
 		byte[] img_stream = null;
 
 		try {
-                        logger.info("Create Temp File in directory: " + GraphViz.TEMP_DIR);
-			img = File.createTempFile("graph_", "." + type, new File(GraphViz.TEMP_DIR));
+			img = File.createTempFile("graph_", "." + type, new File(
+					GraphViz.TEMP_DIR));
 			Runtime rt = Runtime.getRuntime();
 
 			// patch by Mike Chenault
@@ -309,7 +301,6 @@ public class GraphViz {
 			String[] args = { DOT, "-T" + type, "-K" + representationType,
 					"-Gdpi=" + dpiSizes[this.currentDpiPos],
 					dot.getAbsolutePath(), "-o", img.getAbsolutePath() };
-                        logger.info("Graphviz parameters: " + java.util.Arrays.toString(args));
 			Process p = rt.exec(args);
 			p.waitFor();
 
@@ -320,23 +311,19 @@ public class GraphViz {
 			if (in != null)
 				in.close();
 
-			if (img.delete() == false){
-                            String strErr = "Warning: " + img.getAbsolutePath()
-						+ " could not be deleted!";
-        			System.err.println(strErr);
-                                logger.error(strErr);
-                        }
+			if (img.delete() == false)
+				System.err.println("Warning: " + img.getAbsolutePath()
+						+ " could not be deleted!");
 		} catch (java.io.IOException ioe) {
-                        String strErr = "Error:    in I/O processing of tempfile in dir "
-							+ GraphViz.TEMP_DIR + "\n" + "       or in calling external command";
-			System.err.println(strErr);
+			System.err
+					.println("Error:    in I/O processing of tempfile in dir "
+							+ GraphViz.TEMP_DIR + "\n");
+			System.err.println("       or in calling external command");
 			ioe.printStackTrace();
-                        logger.error(strErr + ioe);
 		} catch (java.lang.InterruptedException ie) {
-                        String strErr = "Error: the execution of the external program was interrupted";
-			System.err.println(strErr);
+			System.err
+					.println("Error: the execution of the external program was interrupted");
 			ie.printStackTrace();
-                        logger.error(strErr + ie);
 		}
 
 		return img_stream;
@@ -352,7 +339,7 @@ public class GraphViz {
 	 *         graph.
 	 */
 	private File writeDotSourceToFile(String str) throws java.io.IOException {
-		File temp = null;
+		File temp;
 		try {
 			temp = File.createTempFile("graph_", ".dot.tmp", new File(
 					GraphViz.TEMP_DIR));
@@ -360,10 +347,10 @@ public class GraphViz {
 			fout.write(str);
 			fout.close();
 		} catch (Exception e) {
-                        String strErr = "Error: I/O error while writing the dot source to temp file! = "
-							+ GraphViz.TEMP_DIR;
-			System.err.println(strErr);
-			logger.error(strErr);
+			System.err
+					.println("Error: I/O error while writing the dot source to temp file! = "
+							+ GraphViz.TEMP_DIR);
+			return null;
 		}
 		return temp;
 	}
@@ -424,9 +411,7 @@ public class GraphViz {
 			}
 			dis.close();
 		} catch (Exception e) {
-                    String strErr = "Error: " + e.getMessage();
-                    System.err.println(strErr);
-                    logger.error(strErr);
+			System.err.println("Error: " + e.getMessage());
 		}
 
 		this.graph = sb;
