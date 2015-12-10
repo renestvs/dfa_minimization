@@ -31,6 +31,8 @@ public class DFAService {
 	private String DFAMinimizedPath;
 	
 	private static Logger logger = Logger.getLogger(DFAController.class);
+        
+        public static final String FILE_LINE_SEPARATOR = "\r\n"; //Could be System.getProperty("line.separator"), but there are problems in Linux;
 	
 	public DFAService (){
 		
@@ -92,7 +94,7 @@ public class DFAService {
 		LinkedHashSet<Character> DFAAlphabet = new LinkedHashSet<Character>();
 		
 		// cada elemento do vetor armazena uma linha da string
-		String[] lines = dfa.split(System.getProperty("line.separator"));
+		String[] lines = dfa.split(FILE_LINE_SEPARATOR);
 		
 		boolean initial = true;
 		boolean state = true;
@@ -229,7 +231,5 @@ public class DFAService {
 	public void setDFAMinimizedPath(String filename) {
 		DFAMinimizedPath = "/automaton/resources/img/" + filename + "." + type;
 	}
-
-
 	
 }
