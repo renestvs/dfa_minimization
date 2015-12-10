@@ -267,7 +267,7 @@ public class DFAMinimizer {
 			}
 
 			if (initial) {
-				minimizedState.setNumber(state.getNumber());
+				minimizedState.setNumber(updateStateNumber(set));
 				minimizedStates.addFirst(minimizedState);
 			} else {
 				minimizedStates.addLast(minimizedState);
